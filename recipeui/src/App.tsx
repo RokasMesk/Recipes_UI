@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
-import RecipeBox from './RecipeBox'; // Import the RecipeBox component
+import RecipeBox from './RecipeBox';
 import './App.css';
 
 export interface Recipe {
@@ -18,6 +18,10 @@ export interface Recipe {
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    // Initialize isLoggedIn state from localStorage
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
   const apiUrl = 'https://localhost:7063/api/Recipe';
 
   useEffect(() => {
@@ -36,9 +40,23 @@ function App() {
       });
   }, []);
 
+  // Function to handle login success
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    // Save login status to localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+  };
+
+  // Function to handle logout
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    // Remove login status from localStorage
+    localStorage.removeItem('isLoggedIn');
+  };
+
   return (
     <div className="App">
-      <Header />
+      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} onLoginSuccess={handleLoginSuccess} />
       <h2>Recipes</h2>
       <div className="recipe-container">
         {recipes !== null ? (
