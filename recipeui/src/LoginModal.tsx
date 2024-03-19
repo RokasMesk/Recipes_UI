@@ -47,6 +47,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
       if (!response.ok) {
         throw new Error(`Failed to ${endpoint}`);
       }
+      if (endpoint === 'register') {
+        // Display registration success message
+        setError('Registration successful, please log in');
+        setIsRegistering(false); // Switch back to login mode
+      } else {
+        // Reset form fields and close modal for login
+        
+        setError('');
+        onClose();
+        return response.json();
+      }
       setFormData({
         identifier: '', // Reset identifier field
         username: '', // Reset username field
@@ -54,16 +65,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         password: '',
         confirmPassword: ''
       });
-      setError('');
-      onClose();
-      return response.json();
     })
     .then(data => {
       if (endpoint === 'login') {
-        const { token } = data
+        const { token } = data;
         // You can store loginResponse in state or wherever you need it
         console.log('Login successful:', data);
-
+    
         onLoginSuccess(token);
       }
     })
@@ -71,7 +79,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
       console.error(`There was a problem ${endpoint} in:`, error);
       setError(`Failed to ${endpoint}. Please try again.`);
     });
-  };
+  }
 
   const toggleRegistration = () => {
     setIsRegistering(!isRegistering);
