@@ -31,6 +31,20 @@
   cursor: pointer;
 }
 
+.login {
+  padding: 10px 20px;
+  background-color: #eea913;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.login:hover {
+  background-color: #996a12;
+}
+
 .createRecipe:hover {
   background-color: #996a12;
 }

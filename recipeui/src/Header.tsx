@@ -29,7 +29,7 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
         </div>
         <div className="right">
           {isLoggedIn ? (
-            <button className='logout' onClick={onLogout}>Logout</button>
+            <button className='login' onClick={onLogout}>Logout</button>
           ) : (
             <button className='login' onClick={toggleLogin}>Login</button>
           )}

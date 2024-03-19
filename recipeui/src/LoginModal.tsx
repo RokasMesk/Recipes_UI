@@ -82,7 +82,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
 
   return (
     <div className="modal-overlay">
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className={`modal ${isRegistering ? 'registering' : ''}`} onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>X</button>
         <h1>{isRegistering ? 'Register' : 'Login'}</h1>
         {error && <p className="error">{error}</p>}
@@ -117,7 +117,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
           )}
           <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
         </form>
-        <p>If you aren't already registered <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+        {!isRegistering ? (
+          <p>If you aren't already registered <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+        ) : (
+          <p>If you are already have an account <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+        )}
       </div>
     </div>
   );
