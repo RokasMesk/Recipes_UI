@@ -4,7 +4,7 @@ import './LoginModal.css';
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: () => void;
+  onLoginSuccess: (token: string) => void;
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
@@ -56,8 +56,15 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
       });
       setError('');
       onClose();
+      return response.json();
+    })
+    .then(data => {
       if (endpoint === 'login') {
-        onLoginSuccess();
+        const { token } = data
+        // You can store loginResponse in state or wherever you need it
+        console.log('Login successful:', data);
+
+        onLoginSuccess(token);
       }
     })
     .catch(error => {

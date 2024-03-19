@@ -6,12 +6,13 @@ import LoginModal from './LoginModal';
 interface HeaderProps {
   isLoggedIn: boolean;
   onLogout: () => void;
-  onLoginSuccess: () => void; // Add onLoginSuccess prop
+  onLoginSuccess: (token: string) => void;
 }
 
 function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -19,6 +20,14 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
 
   const toggleLogin = () => {
     setIsLoginOpen(!isLoginOpen);
+  };
+
+  const handleLogout = () => {
+    // Clear token or any other stored login data
+    setToken(null);
+
+    // Propagate logout action to parent component
+    onLogout();
   };
 
   return (
@@ -37,7 +46,8 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
         </div>
       </div>
       <RecipeCreationModal isOpen={isModalOpen} onClose={toggleModal} />
-      <LoginModal isOpen={isLoginOpen} onClose={toggleLogin} onLoginSuccess={onLoginSuccess} />      
+      <LoginModal isOpen={isLoginOpen} onClose={toggleLogin} onLoginSuccess={(token: string) => { setToken(token); onLoginSuccess(token); }} />
+
     </header>
   );
 }
