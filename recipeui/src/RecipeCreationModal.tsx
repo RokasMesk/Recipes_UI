@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RecipeCreationModal.css';
+
+interface Product {
+  id: number;
+  productName: string;
+}
 
 interface RecipeCreationModalProps {
   isOpen: boolean;
@@ -12,35 +17,76 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
     shortDescription: '',
     description: '',
     imageUrl: '',
-    products: [],
+    products: [] as Product[],
+    selectedProducts: [] as Product[],
     preparation: '',
     skillLevel: '',
     timeForCooking: 0,
     type: 0
   });
 
+  useEffect(() => {
+    fetchProducts();
+  }, []); 
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('https://localhost:7063/api/Product');
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      const data: Product[] = await response.json();
+      setFormData({ ...formData, products: data });
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleProductClick = (selectedProduct: Product) => {
+    if (formData.selectedProducts.includes(selectedProduct)) {
+      // Product is already selected, remove it
+      const updatedSelectedProducts = formData.selectedProducts.filter(product => product !== selectedProduct);
+      setFormData({ ...formData, selectedProducts: updatedSelectedProducts });
+    } else {
+      // Product is not selected, add it
+      setFormData({ ...formData, selectedProducts: [...formData.selectedProducts, selectedProduct] });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // You can handle the form submission here, e.g., send the data to the server
-    console.log(formData);
-    // Assuming you have an API endpoint to post the data, you can use fetch or any other HTTP client library to send a POST request
+    // Extracting only the ingredient IDs from selected products
+    const ingredientIds = formData.selectedProducts.map(product => product.id);
+    const recipeData = {
+      title: formData.title,
+      shortDescription: formData.shortDescription,
+      description: formData.description,
+      imageUrl: formData.imageUrl,
+      products: ingredientIds, // Sending only the ingredient IDs
+      preparation: formData.preparation,
+      skillLevel: formData.skillLevel,
+      timeForCooking: formData.timeForCooking,
+      type: formData.type
+    };
+  
+    console.log(recipeData);
+  
     fetch('https://localhost:7063/api/Recipe', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(recipeData)
     })
     .then(response => {
       if (!response.ok) {
         throw new Error('Failed to create recipe');
       }
-      // Close the modal after successful submission
       onClose();
     })
     .catch(error => {
@@ -87,6 +133,23 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
           <div className="form-group">
             <label>Type:</label>
             <input type="number" name="type" value={formData.type} onChange={handleInputChange} required />
+          </div>
+          <div className="form-group">
+            <label>Select Products:</label>
+            <ul>
+              {formData.products.map(product => (
+                <li key={product.id}>
+                  <label>
+                    <input 
+                      type="checkbox" 
+                      checked={formData.selectedProducts.includes(product)} 
+                      onChange={() => handleProductClick(product)} 
+                    />
+                    {product.productName}
+                  </label>
+                </li>
+              ))}
+            </ul>
           </div>
           <button type="submit">Create Recipe</button>
         </form>
