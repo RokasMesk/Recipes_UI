@@ -37,8 +37,13 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
           Receptai
         </div>
         <div className="right">
+        
           {isLoggedIn ? (
-            <button className='login' onClick={onLogout}>Logout</button>
+            <>
+              <p className='username'>Hello, {localStorage.getItem('username')}</p>
+              <button className='login' onClick={handleLogout}>Logout</button>
+            </>
+            
           ) : (
             <button className='login' onClick={toggleLogin}>Login</button>
           )}

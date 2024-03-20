@@ -69,6 +69,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
     .then(data => {
       if (endpoint === 'login') {
         const { token } = data;
+        const { username, email, roles } = data;
+        localStorage.setItem('username', username);
+        localStorage.setItem('email', email);
+        localStorage.setItem('roles', JSON.stringify(roles));
         // You can store loginResponse in state or wherever you need it
         console.log('Login successful:', data);
     
