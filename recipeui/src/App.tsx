@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import RecipeBox from './RecipeBox';
+import RecipeDetails from './RecipeDetails';
 import './App.css';
 
 export interface Recipe {
@@ -55,19 +57,29 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} onLoginSuccess={handleLoginSuccess} />
-      <h2>Recipes</h2>
-      <div className="recipe-container">
-        {recipes !== null ? (
-          recipes.map(recipe => (
-            <RecipeBox key={recipe.id} recipe={recipe} />
-          ))
-        ) : (
-          <p>Loading...</p>
-        )}
+    <Router>
+      <div className="App">
+        <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} onLoginSuccess={handleLoginSuccess} />
+        <h2>Recipes</h2>
+        <div className="recipe-container">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                recipes !== null ? (
+                  recipes.map(recipe => (
+                    <RecipeBox key={recipe.id} recipe={recipe} />
+                  ))
+                ) : (
+                  <p>Loading...</p>
+                )
+              }
+            />
+            <Route path="/recipe/:id" element={<RecipeDetails />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
