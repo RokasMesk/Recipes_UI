@@ -4,6 +4,8 @@ import Header from './Header';
 import RecipeBox from './RecipeBox';
 import RecipeDetails from './RecipeDetails';
 import './App.css';
+import SearchResultsList  from './SearchResultsList';
+import SearchBar from './SearchBar';
 
 export interface Recipe {
   id: number;
@@ -19,6 +21,7 @@ export interface Recipe {
 }
 
 function App() {
+  const [results, setResults] = useState<Recipe[]>([]);
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     // Initialize isLoggedIn state from localStorage
@@ -59,7 +62,11 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} onLoginSuccess={handleLoginSuccess} />
+        <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} onLoginSuccess={handleLoginSuccess}/>
+        <div className="search-bar-container">  
+        <SearchBar setResults = {setResults}/>
+        <SearchResultsList results={results}/>
+        </div>
         <h2>Recipes</h2>
         <div className="recipe-container">
           <Routes>

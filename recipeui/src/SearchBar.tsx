@@ -1,0 +1,65 @@
+import React, {useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import { faSearch } from '@fortawesome/free-solid-svg-icons'; // Import the search icon from Font Awesome
+import './App.css';
+import { Recipe } from './App';
+interface SearchBarProps {
+    setResults: (results: any) => void;
+  }
+function SearchBar({setResults} : SearchBarProps) {
+
+    const [input, setInput] = useState("");
+  
+    const fetchData = (value: string) => {
+        fetch("https://localhost:7063/api/Recipe")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then((json: Recipe[]) => {
+            const results = json.filter((data) => {
+              return (
+                data &&
+                data.title && // Assuming each recipe has a 'title' property
+                data.title.toLowerCase().includes(value.toLowerCase())
+              );
+            });
+            setResults(results);
+          })
+          .catch((error) => {
+            console.error('There was a problem fetching data:', error);
+          });
+      };
+      
+    const handleChange = (value : any) => {
+      setInput(value);
+      fetchData(value);
+    } 
+    const handleSearch = () => {
+      // Perform search based on searchQuery
+      console.log('Performing search for:', setInput);
+      // You can add additional logic here to handle the search functionality, like filtering recipes based on the search query.
+    };
+  
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        handleSearch();
+      }
+    };
+  
+    return (
+
+          <div className="search-input">
+            <input placeholder="Search" 
+            value={input}
+            onChange={(e) => handleChange(e.target.value)}
+            />
+            <button onClick={handleSearch} className="search-button">
+              <FontAwesomeIcon icon={faSearch} className="search-icon"/> {/* Search icon */}
+            </button>
+            </div>
+    );
+  }
+  export default SearchBar;
