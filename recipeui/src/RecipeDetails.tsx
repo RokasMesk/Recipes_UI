@@ -58,6 +58,7 @@ function RecipeDetails() {
         <p><strong>Time for Cooking:</strong> {recipe.timeForCooking} minutes</p>
         <p><strong>Type: </strong> {recipe.type.type}</p>
       </div>
+      <button>Delete</button>
     </div>
   );
 }

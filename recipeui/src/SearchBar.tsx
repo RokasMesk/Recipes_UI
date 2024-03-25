@@ -22,6 +22,7 @@ function SearchBar({setResults} : SearchBarProps) {
             const results = json.filter((data) => {
               return (
                 data &&
+                value &&
                 data.title && // Assuming each recipe has a 'title' property
                 data.title.toLowerCase().includes(value.toLowerCase())
               );
@@ -38,16 +39,10 @@ function SearchBar({setResults} : SearchBarProps) {
       fetchData(value);
     } 
     const handleSearch = () => {
-      // Perform search based on searchQuery
-      console.log('Performing search for:', setInput);
-      // You can add additional logic here to handle the search functionality, like filtering recipes based on the search query.
+      console.log('Performing search for:', input);  setInput('');
     };
   
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
-        handleSearch();
-      }
-    };
+
   
     return (
 
