@@ -1,6 +1,7 @@
 // RecipeDetails.tsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Recipe } from './App';
 import './RecipeDetails.css'; // Import CSS for styling
 
@@ -8,6 +9,7 @@ function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const { id } = useParams<{ id: string }>();
   const apiUrl = `https://localhost:7063/api/Recipe/${id}`;
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(apiUrl)
@@ -24,6 +26,25 @@ function RecipeDetails() {
         console.error('There was a problem fetching data:', error);
       });
   }, [apiUrl]);
+
+  const handleDelete = () => {
+    fetch(`https://localhost:7063/api/Recipe/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to delete recipe');
+      }
+      // Navigate to the start page after successful deletion
+      navigate('/');
+    })
+    .catch(error => {
+      console.error('There was a problem deleting the recipe:', error);
+    });
+  };
 
   if (!recipe) {
     return <div>Loading...</div>;
@@ -58,7 +79,7 @@ function RecipeDetails() {
         <p><strong>Time for Cooking:</strong> {recipe.timeForCooking} minutes</p>
         <p><strong>Type: </strong> {recipe.type.type}</p>
       </div>
-      <button>Delete</button>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }
