@@ -28,7 +28,7 @@ function RecipeDetails() {
   }, [apiUrl]);
 
   const handleDelete = () => {
-    fetch(`https://localhost:7063/api/Recipe/${id}`, {
+    fetch(apiUrl, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -45,6 +45,18 @@ function RecipeDetails() {
       console.error('There was a problem deleting the recipe:', error);
     });
   };
+
+  useEffect(() => {
+    const roles = localStorage.getItem('roles');
+    if (roles) {
+      const parsedRoles = JSON.parse(roles);
+      if (parsedRoles.includes('Admin')) {
+        // User has admin role, enable delete button
+        setShowDeleteButton(true);
+      }
+    }
+  }, []);
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   if (!recipe) {
     return <div>Loading...</div>;
@@ -79,7 +91,7 @@ function RecipeDetails() {
         <p><strong>Time for Cooking:</strong> {recipe.timeForCooking} minutes</p>
         <p><strong>Type: </strong> {recipe.type.type}</p>
       </div>
-      <button onClick={handleDelete}>Delete</button>
+      {showDeleteButton && <button onClick={handleDelete}>Delete</button>}
     </div>
   );
 }
