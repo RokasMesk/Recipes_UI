@@ -91,7 +91,7 @@ function RecipeDetails() {
         <p><strong>Time for Cooking:</strong> {recipe.timeForCooking} minutes</p>
         <p><strong>Type: </strong> {recipe.type.type}</p>
       </div>
-      {showDeleteButton && <button onClick={handleDelete}>Delete</button>}
+      {showDeleteButton && <button type="submit" onClick={handleDelete}>Delete</button>}
     </div>
   );
 }
