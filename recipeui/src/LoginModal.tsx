@@ -6,14 +6,14 @@ interface LoginModalProps {
   onClose: () => void;
   onLoginSuccess: (token: string) => void;
   isRegistering: boolean;
+  toggleRegistering: () => void; // Callback function to toggle registering state
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering }) => {
-  //const [isRegistering, setIsRegistering] = useState(false);
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering, toggleRegistering }) => {
   const [formData, setFormData] = useState({
-    identifier: '', // Change to identifier to accept either username or email
-    username: '', // New field for registration
-    email: '', // New field for registration
+    identifier: '',
+    username: '',
+    email: '',
     password: '',
     confirmPassword: ''
   });
@@ -49,20 +49,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         throw new Error(`Failed to ${endpoint}`);
       }
       if (endpoint === 'register') {
-        // Display registration success message
         setError('Registration successful, please log in');
-        isRegistering=false; // Switch back to login mode
       } else {
-        // Reset form fields and close modal for login
-        
         setError('');
         onClose();
         return response.json();
       }
       setFormData({
-        identifier: '', // Reset identifier field
-        username: '', // Reset username field
-        email: '', // Reset email field
+        identifier: '',
+        username: '',
+        email: '',
         password: '',
         confirmPassword: ''
       });
@@ -74,9 +70,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         localStorage.setItem('username', username);
         localStorage.setItem('email', email);
         localStorage.setItem('roles', JSON.stringify(roles));
-        // You can store loginResponse in state or wherever you need it
         console.log('Login successful:', data);
-    
         onLoginSuccess(token);
       }
     })
@@ -85,19 +79,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
       setError(`Failed to ${endpoint}. Please try again.`);
     });
   }
-
-  const toggleRegistration = () => {
-    //setIsRegistering(!isRegistering);
-    isRegistering=true;
-    setFormData({
-      identifier: '', // Reset identifier field
-      username: '', // Reset username field
-      email: '', // Reset email field
-      password: '',
-      confirmPassword: ''
-    });
-    setError('');
-  };
 
   if (!isOpen) return null;
 
@@ -136,12 +117,12 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
               <input type="password" name="confirmPassword" data-testid="register-confirm-password" value={formData.confirmPassword} onChange={handleInputChange} required />
             </div>
           )}
-          <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
+          <button data-testid="login-register-button" type="submit">{isRegistering ? 'Register' : 'Login'}</button>
         </form>
         {!isRegistering ? (
-          <p>If you aren't already registered <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+          <p data-testid="if-not-registered-redirect">If you aren't already registered <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
         ) : (
-          <p>If you are already have an account <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+          <p data-testid="if-already-account-redirect">If you already have an account <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
         )}
       </div>
     </div>

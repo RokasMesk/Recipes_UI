@@ -78,7 +78,7 @@ function App() {
                     <RecipeBox key={recipe.id} recipe={recipe} />
                   ))
                 ) : (
-                  <p>Loading...</p>
+                  <p data-testid="recipes-loading">Loading...</p>
                 )
               }
             />
