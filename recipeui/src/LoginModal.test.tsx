@@ -98,14 +98,14 @@ test('opens register modal and checks if elements present', () => {
      isOpen={true}
      onClose={onLogout} 
      onLoginSuccess={onLoginSuccess}
-     isRegistering={false} 
+     isRegistering={true} 
      toggleRegistering={toggleRegistering}
    />
  );
 
   // Assert that the login modal is open
-  const loginModal = screen.getByTestId('register-modal-form');
-  expect(loginModal).toBeInTheDocument();
+  const registerModal = screen.getByTestId('register-modal-form');
+  expect(registerModal).toBeInTheDocument();
 
   // Access elements within the login modal and assert their presence
   const usernameInput = screen.getByTestId('register-username');
@@ -139,14 +139,14 @@ test('opens register modal and accesses its elements', () => {
      isOpen={true}
      onClose={onLogout} 
      onLoginSuccess={onLoginSuccess}
-     isRegistering={false} 
+     isRegistering={true} 
      toggleRegistering={toggleRegistering}
    />
  );
 
   // Assert that the login modal is open
-  const loginModal = screen.getByTestId('register-modal-form');
-  expect(loginModal).toBeInTheDocument();
+  const registerModal = screen.getByTestId('register-modal-form');
+  expect(registerModal).toBeInTheDocument();
 
   // Access elements within the login modal and assert their presence
   const usernameInput = screen.getByTestId('register-username');
