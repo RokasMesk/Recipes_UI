@@ -5,10 +5,11 @@ interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLoginSuccess: (token: string) => void;
+  isRegistering: boolean;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
-  const [isRegistering, setIsRegistering] = useState(false);
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering }) => {
+  //const [isRegistering, setIsRegistering] = useState(false);
   const [formData, setFormData] = useState({
     identifier: '', // Change to identifier to accept either username or email
     username: '', // New field for registration
@@ -50,7 +51,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
       if (endpoint === 'register') {
         // Display registration success message
         setError('Registration successful, please log in');
-        setIsRegistering(false); // Switch back to login mode
+        isRegistering=false; // Switch back to login mode
       } else {
         // Reset form fields and close modal for login
         
@@ -86,7 +87,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
   }
 
   const toggleRegistration = () => {
-    setIsRegistering(!isRegistering);
+    //setIsRegistering(!isRegistering);
+    isRegistering=true;
     setFormData({
       identifier: '', // Reset identifier field
       username: '', // Reset username field
@@ -105,33 +107,33 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         <button className="close-button" onClick={onClose}>X</button>
         <h1>{isRegistering ? 'Register' : 'Login'}</h1>
         {error && <p className="error">{error}</p>}
-        <form onSubmit={handleSubmit}>
+        <form data-testid={isRegistering ? 'register-modal-form' : 'login-modal-form'} onSubmit={handleSubmit}>
           {isRegistering && (
             <div className="form-group">
               <label>Username:</label>
-              <input type="text" name="username" value={formData.username} onChange={handleInputChange} required />
+              <input type="text" name="username" data-testid="register-username" value={formData.username} onChange={handleInputChange} required />
             </div>
           )}
           {isRegistering && (
             <div className="form-group">
               <label>Email:</label>
-              <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
+              <input type="email" name="email" data-testid="register-email" value={formData.email} onChange={handleInputChange} required />
             </div>
           )}
           {!isRegistering && (
             <div className="form-group">
               <label>Username or Email:</label>
-              <input type="text" name="identifier" value={formData.identifier} onChange={handleInputChange} required />
+              <input type="text" name="identifier" data-testid="login-username-email" value={formData.identifier} onChange={handleInputChange} required />
             </div>
           )}
           <div className="form-group">
             <label>Password:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
+            <input type="password" name="password" data-testid="login-password" value={formData.password} onChange={handleInputChange} required />
           </div>
           {isRegistering && (
             <div className="form-group">
               <label>Confirm Password:</label>
-              <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} required />
+              <input type="password" name="confirmPassword" data-testid="register-confirm-password" value={formData.confirmPassword} onChange={handleInputChange} required />
             </div>
           )}
           <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
