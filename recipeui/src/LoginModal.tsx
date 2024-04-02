@@ -5,14 +5,15 @@ interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLoginSuccess: (token: string) => void;
+  isRegistering: boolean;
+  toggleRegistering: () => void; // Callback function to toggle registering state
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess }) => {
-  const [isRegistering, setIsRegistering] = useState(false);
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering, toggleRegistering }) => {
   const [formData, setFormData] = useState({
-    identifier: '', // Change to identifier to accept either username or email
-    username: '', // New field for registration
-    email: '', // New field for registration
+    identifier: '',
+    username: '',
+    email: '',
     password: '',
     confirmPassword: ''
   });
@@ -48,20 +49,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         throw new Error(`Failed to ${endpoint}`);
       }
       if (endpoint === 'register') {
-        // Display registration success message
         setError('Registration successful, please log in');
-        setIsRegistering(false); // Switch back to login mode
       } else {
-        // Reset form fields and close modal for login
-        
         setError('');
         onClose();
         return response.json();
       }
       setFormData({
-        identifier: '', // Reset identifier field
-        username: '', // Reset username field
-        email: '', // Reset email field
+        identifier: '',
+        username: '',
+        email: '',
         password: '',
         confirmPassword: ''
       });
@@ -73,9 +70,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         localStorage.setItem('username', username);
         localStorage.setItem('email', email);
         localStorage.setItem('roles', JSON.stringify(roles));
-        // You can store loginResponse in state or wherever you need it
         console.log('Login successful:', data);
-    
         onLoginSuccess(token);
       }
     })
@@ -85,18 +80,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
     });
   }
 
-  const toggleRegistration = () => {
-    setIsRegistering(!isRegistering);
-    setFormData({
-      identifier: '', // Reset identifier field
-      username: '', // Reset username field
-      email: '', // Reset email field
-      password: '',
-      confirmPassword: ''
-    });
-    setError('');
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -105,41 +88,41 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
         <button className="close-button" onClick={onClose}>X</button>
         <h1>{isRegistering ? 'Register' : 'Login'}</h1>
         {error && <p className="error">{error}</p>}
-        <form onSubmit={handleSubmit}>
+        <form data-testid={isRegistering ? 'register-modal-form' : 'login-modal-form'} onSubmit={handleSubmit}>
           {isRegistering && (
             <div className="form-group">
               <label>Username:</label>
-              <input type="text" name="username" value={formData.username} onChange={handleInputChange} required />
+              <input type="text" name="username" data-testid="register-username" value={formData.username} onChange={handleInputChange} required />
             </div>
           )}
           {isRegistering && (
             <div className="form-group">
               <label>Email:</label>
-              <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
+              <input type="email" name="email" data-testid="register-email" value={formData.email} onChange={handleInputChange} required />
             </div>
           )}
           {!isRegistering && (
             <div className="form-group">
               <label>Username or Email:</label>
-              <input type="text" name="identifier" value={formData.identifier} onChange={handleInputChange} required />
+              <input type="text" name="identifier" data-testid="login-username-email" value={formData.identifier} onChange={handleInputChange} required />
             </div>
           )}
           <div className="form-group">
             <label>Password:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
+            <input type="password" name="password" data-testid="login-password" value={formData.password} onChange={handleInputChange} required />
           </div>
           {isRegistering && (
             <div className="form-group">
               <label>Confirm Password:</label>
-              <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} required />
+              <input type="password" name="confirmPassword" data-testid="register-confirm-password" value={formData.confirmPassword} onChange={handleInputChange} required />
             </div>
           )}
-          <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
+          <button data-testid="login-register-button" type="submit">{isRegistering ? 'Register' : 'Login'}</button>
         </form>
         {!isRegistering ? (
-          <p>If you aren't already registered <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+          <p data-testid="if-not-registered-redirect">If you aren't already registered <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
         ) : (
-          <p>If you are already have an account <span className="clickable-text" onClick={toggleRegistration}>Click Here</span>.</p>
+          <p data-testid="if-already-account-redirect">If you already have an account <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
         )}
       </div>
     </div>

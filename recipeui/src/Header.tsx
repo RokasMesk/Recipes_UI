@@ -13,6 +13,7 @@ interface HeaderProps {
 function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
   const toggleModal = () => {
@@ -22,6 +23,10 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
   const toggleLogin = () => {
     setIsLoginOpen(!isLoginOpen);
   };
+
+  const toggleIsRegistering = () => {
+    setIsRegistering(!isRegistering);
+  }
 
   const handleLogout = () => {
     // Clear token or any other stored login data
@@ -50,13 +55,13 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
             </>
             
           ) : (
-            <button className='login' onClick={toggleLogin}>Login</button>
+            <button className='login' data-testid="login-button" onClick={toggleLogin}>Login</button>
           )}
-          <button className='createRecipe' onClick={toggleModal}>Create A Recipe</button>
+          <button className='createRecipe' data-testid="create-recipe-button" onClick={toggleModal}>Create A Recipe</button>
         </div>
       </div>
       <RecipeCreationModal isOpen={isModalOpen} onClose={toggleModal} />
-      <LoginModal isOpen={isLoginOpen} onClose={toggleLogin} onLoginSuccess={(token: string) => { setToken(token); onLoginSuccess(token); }} />
+      <LoginModal isOpen={isLoginOpen} onClose={toggleLogin} isRegistering={isRegistering} toggleRegistering={toggleIsRegistering} onLoginSuccess={(token: string) => { setToken(token); onLoginSuccess(token); }} />
 
     </header>
   );
