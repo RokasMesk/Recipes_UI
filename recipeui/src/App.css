@@ -151,4 +151,11 @@ background-color: #efefef;
   display: flex;
   align-items: center;
 }
+.link {
+  color: yellow; /* Set default color */
+  text-decoration: none; /* Remove underline */
+}
 
+.link:hover {
+  color: blue; /* Change color on hover */
+}

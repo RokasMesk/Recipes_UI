@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Link } from 'react-router-dom';
 import RecipeCreationModal from './RecipeCreationModal';
 import LoginModal from './LoginModal';
 
@@ -25,6 +26,7 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
   const handleLogout = () => {
     // Clear token or any other stored login data
     setToken(null);
+    localStorage.clear();
 
     // Propagate logout action to parent component
     onLogout();
@@ -34,13 +36,16 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
     <header className="App-header">
       <div className="header-content">
         <div className="left">
-          Receptai
+         <Link className='link' to={'/'} >Receptai</Link>
         </div>
         <div className="right">
         
           {isLoggedIn ? (
             <>
               <p className='username'>Hello, {localStorage.getItem('username')}</p>
+              <Link to={`/recipes/${localStorage.getItem("username")}`} className="see-more-button">
+                  My Recipes
+              </Link>
               <button className='login' onClick={handleLogout}>Logout</button>
             </>
             

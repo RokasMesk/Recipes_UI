@@ -6,6 +6,7 @@ import RecipeDetails from './RecipeDetails';
 import './App.css';
 import SearchResultsList  from './SearchResultsList';
 import SearchBar from './SearchBar';
+import MyRecipesPage from './MyRecipesPage';
 
 export interface Recipe {
   id: number;
@@ -83,6 +84,9 @@ function App() {
               }
             />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
+           
+            <Route path={`/recipes/${localStorage.getItem("username")}`} element={<MyRecipesPage/>} />
+            
           </Routes>
         </div>
       </div>

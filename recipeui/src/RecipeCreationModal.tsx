@@ -60,6 +60,7 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const author = localStorage.getItem('email')
     // Extracting only the ingredient IDs from selected products
     const ingredientIds = formData.selectedProducts.map(product => product.id);
     const recipeData = {
@@ -71,7 +72,8 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
       preparation: formData.preparation,
       skillLevel: formData.skillLevel,
       timeForCooking: formData.timeForCooking,
-      type: formData.type
+      type: formData.type,
+      author:author
     };
   
     console.log(recipeData);
