@@ -152,10 +152,11 @@ background-color: #efefef;
   align-items: center;
 }
 .link {
-  color: yellow; /* Set default color */
-  text-decoration: none; /* Remove underline */
+  color: yellow; 
+  text-decoration: none; 
+  padding-right: 20px;
 }
 
 .link:hover {
-  color: blue; /* Change color on hover */
+  color: blue; 
 }
