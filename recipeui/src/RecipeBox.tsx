@@ -21,6 +21,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
             <li key={product.id}>{product.productName}</li>
           ))}
         </ul>
+        <h3>Created by: {recipe.recipeCreatorUserName}</h3>
         <Link to={`/recipe/${recipe.id}`} className="see-more-button">
           See more
         </Link>

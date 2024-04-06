@@ -37,4 +37,8 @@
     border-top: 1px solid #ccc;
     padding-top: 20px;
   }
+  .author{
+    text-align: right;
+    color: blue;
+  }
   

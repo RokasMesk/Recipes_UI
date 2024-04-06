@@ -64,6 +64,7 @@ function RecipeDetails() {
 
   return (
     <div className="recipe-details-container">
+      <h3 className='author'>Recipe author: {recipe.recipeCreatorUserName}</h3>
       <h2 className="title">Title: {recipe.title}</h2>
       <div className="image-container">
         <img src={recipe.imageUrl} alt={recipe.title} className="image" />

@@ -19,6 +19,7 @@ export interface Recipe {
   skillLevel: string;
   timeForCooking: number;
   type: { id: number; type: string };
+  recipeCreatorUserName: string
 }
 
 function App() {
