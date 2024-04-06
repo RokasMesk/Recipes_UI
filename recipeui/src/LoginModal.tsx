@@ -65,11 +65,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
     })
     .then(data => {
       if (endpoint === 'login') {
-        const { token } = data;
-        const { username, email, roles } = data;
+        const { token, username, email, roles, userId } = data; 
         localStorage.setItem('username', username);
         localStorage.setItem('email', email);
         localStorage.setItem('roles', JSON.stringify(roles));
+        localStorage.setItem('userId', userId); // Store the userId
         console.log('Login successful:', data);
         onLoginSuccess(token);
       }

@@ -51,6 +51,9 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
               <Link to={`/recipes/${localStorage.getItem("username")}`} className="see-more-button link">
                   My Recipes
               </Link>
+              <Link to={`/favourites/${localStorage.getItem("username")}`} className="see-more-button link">
+                  My Favourites
+              </Link>
               <button className='login' onClick={handleLogout}>Logout</button>
             </>
             

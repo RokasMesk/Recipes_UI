@@ -7,6 +7,8 @@ import './App.css';
 import SearchResultsList  from './SearchResultsList';
 import SearchBar from './SearchBar';
 import MyRecipesPage from './MyRecipesPage';
+import ProfilePage from './ProfilePage';
+import MyFavouritesPage from './MyFavouritesPage';
 
 export interface Recipe {
   id: number;
@@ -87,7 +89,8 @@ function App() {
             <Route path="/recipe/:id" element={<RecipeDetails />} />
            
             <Route path={`/recipes/${localStorage.getItem("username")}`} element={<MyRecipesPage/>} />
-            
+            <Route path={`/favourites/${localStorage.getItem("username")}`} element={<MyFavouritesPage/>} />
+            <Route path="/profile/:username" element={<ProfilePage />} />
           </Routes>
         </div>
       </div>

@@ -60,6 +60,7 @@
 }
 
 .recipe-box {
+  position: relative;
   width: 400px;
   height: 600px;
   border: 1px solid #ccc;
@@ -159,4 +160,18 @@ background-color: #efefef;
 
 .link:hover {
   color: blue; 
+}
+
+.like-button {
+  background: none;
+  border: none; 
+  padding: 5px; 
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.author-link {
+  cursor: pointer;
 }
