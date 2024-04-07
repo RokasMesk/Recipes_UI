@@ -1,6 +1,6 @@
 // RecipeDetails.tsx
 import React, { useState, useEffect } from 'react';
-import { useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Recipe } from './App';
 import './RecipeDetails.css'; // Import CSS for styling
@@ -34,28 +34,36 @@ function RecipeDetails() {
         'Content-Type': 'application/json'
       }
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to delete recipe');
-      }
-      // Navigate to the start page after successful deletion
-      navigate('/');
-    })
-    .catch(error => {
-      console.error('There was a problem deleting the recipe:', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete recipe');
+        }
+        // Navigate to the start page after successful deletion
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('There was a problem deleting the recipe:', error);
+      });
   };
-
+  const handleEdit = () => {
+    navigate(`/edit/${id}`);
+  };
   useEffect(() => {
-    const roles = localStorage.getItem('roles');
-    if (roles) {
-      const parsedRoles = JSON.parse(roles);
-      if (parsedRoles.includes('Admin')) {
-        setShowDeleteButton(true);
+    const loggedInUser = localStorage.getItem('username');
+    if (loggedInUser) {
+      setShowEditButton(true);
+      const roles = localStorage.getItem('roles');
+      if (roles) {
+        const parsedRoles = JSON.parse(roles);
+        if (parsedRoles.includes('Admin')) {
+          setShowDeleteButton(true);
+        }
       }
     }
   }, []);
+
   const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
 
   if (!recipe) {
     return <div>Loading...</div>;
@@ -92,6 +100,9 @@ function RecipeDetails() {
         <p><strong>Type: </strong> {recipe.type.type}</p>
       </div>
       {showDeleteButton && <button type="submit" onClick={handleDelete}>Delete</button>}
+      {showEditButton && (
+        <button type = "submit" onClick={handleEdit}>Edit</button>
+      )}
     </div>
   );
 }
