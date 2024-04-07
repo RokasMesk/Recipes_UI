@@ -9,7 +9,6 @@ import SearchBar from './SearchBar';
 import MyRecipesPage from './MyRecipesPage';
 import ProfilePage from './ProfilePage';
 import MyFavouritesPage from './MyFavouritesPage';
-//import RecipeEditPage from './RecipeEditPage';
 
 export interface Recipe {
   id: number;
@@ -88,7 +87,6 @@ function App() {
               }
             />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
-            {/* <Route path="/edit/:id" element={<RecipeEditPage />} /> */}
 
             <Route path={`/recipes/${localStorage.getItem("username")}`} element={<MyRecipesPage/>} />
             <Route path={`/favourites/${localStorage.getItem("username")}`} element={<MyFavouritesPage/>} />

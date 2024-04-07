@@ -10,7 +10,6 @@ const MyRecipesPage: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    // Fetch recipes for the specified username
     const fetchRecipes = async () => {
       try {
         const response = await fetch(`https://localhost:7063/api/Recipe/user/${localStorage.getItem('username')}`);
