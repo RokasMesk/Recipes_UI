@@ -10,10 +10,13 @@ function EditRecipe() {
     preparation: "",
     skillLevel: "",
     timeForCooking: "",
-    products: [] as number[], // Specify the type as number[]
+    products: [] as number[], 
+    type: "",
+    imageUrl: "",
     // Other fields as needed
   });
-  const [availableProducts, setAvailableProducts] = useState([] as { id: number, productName: string }[]); // Specify the type
+  const [availableProducts, setAvailableProducts] = useState([] as { id: number, productName: string }[]);
+  const [availableTypes, setAvailableTypes] = useState([] as { id: number, typeName: string }[]);
 
   useEffect(() => {
     // Fetch recipe data for editing based on the id parameter
@@ -33,7 +36,9 @@ function EditRecipe() {
           preparation: data.preparation,
           skillLevel: data.skillLevel,
           timeForCooking: data.timeForCooking,
-          products: data.products.map((product: { id: number }) => product.id), // Ensure product.id is of type number
+          products: data.products.map((product: { id: number }) => product.id),
+          type: data.type, 
+          imageUrl: data.ImageURL,// Set type field
           // Set other fields as needed
         });
       })
@@ -56,9 +61,25 @@ function EditRecipe() {
       .catch(error => {
         console.error('There was a problem fetching available products:', error);
       });
+
+    // Fetch available types
+    fetch(`https://localhost:7063/api/RecipeType`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Set the fetched available types
+        setAvailableTypes(data);
+      })
+      .catch(error => {
+        console.error('There was a problem fetching available types:', error);
+      });
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { // Specify the event type
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === "products") {
       const productId = parseInt(value);
@@ -80,7 +101,7 @@ function EditRecipe() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => { // Specify the event type
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Submit edited recipe data using API
     fetch(`https://localhost:7063/api/Recipe/${id}`, {
@@ -103,15 +124,15 @@ function EditRecipe() {
       });
   };
 
-  if (!editedRecipeData.title || availableProducts.length === 0) {
+  if (!editedRecipeData.title || availableProducts.length === 0 || availableTypes.length === 0) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
+    <div style={{ textAlign: 'center', margin: 'auto', maxWidth: '600px' }}>
       {/* Form for editing recipe details */}
       <h2>Edit Recipe</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
         <label>Title:</label>
         <input type="text" name="title" value={editedRecipeData.title} onChange={handleChange} />
         
@@ -140,7 +161,7 @@ function EditRecipe() {
             <input
               type="checkbox"
               name="products"
-              value={product.id.toString()} // Ensure value is of type string
+              value={product.id.toString()}
               checked={editedRecipeData.products.includes(product.id)}
               onChange={handleChange}
             />
@@ -148,7 +169,15 @@ function EditRecipe() {
           </div>
         ))}
         
-        {/* Other fields as needed */}
+        <label>Type:</label>
+        <select name="type" value={editedRecipeData.type} onChange={handleChange}>
+          {availableTypes.map(type => (
+            <option key={type.id} value={type.id}>{type.typeName}</option>
+          ))}
+        </select>
+  
+        <label>Photo URL:</label>
+        <input type="text" name="imageUrl" value={editedRecipeData.imageUrl} onChange={handleChange} />
         
         <button type="submit">Save Changes</button>
         <Link to={`/recipe/${id}`}>Cancel</Link>
