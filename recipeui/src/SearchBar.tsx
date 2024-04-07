@@ -45,16 +45,15 @@ function SearchBar({setResults} : SearchBarProps) {
 
   
     return (
-
-          <div className="search-input">
-            <input placeholder="Search" 
-            value={input}
-            onChange={(e) => handleChange(e.target.value)}
-            />
-            <button onClick={handleSearch} className="search-button">
-              <FontAwesomeIcon icon={faSearch} className="search-icon"/> {/* Search icon */}
-            </button>
-            </div>
+      <div className="search-input">
+        <input placeholder="Search" 
+          value={input}
+          onChange={(e) => handleChange(e.target.value)}
+        />
+        <button onClick={handleSearch} className="search-button">
+          <FontAwesomeIcon icon={faSearch} className="search-icon"/> {/* Search icon */}
+        </button>
+      </div>
     );
   }
   export default SearchBar;

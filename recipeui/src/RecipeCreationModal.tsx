@@ -32,6 +32,11 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
         fetchProducts();
     }, []);
 
+    useEffect(() => {
+        console.log('Selected Products:', formData.selectedProducts);
+    }, [formData.selectedProducts]);
+
+
     const fetchProducts = async () => {
         try {
             const response = await fetch('https://localhost:7063/api/Product');
@@ -44,14 +49,11 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
             console.error('Error fetching products:', error);
         }
     };
+    
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-    };
-
-    const handleProductSelection = (product: Product) => {
-        setFormData({ ...formData, selectedProducts: [...formData.selectedProducts, product] });
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -134,10 +136,14 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                     </div>
                     <div className="form-group">
                         <label>Select Products:</label>
-                        <SearchBar setResults={(results: Product[]) => setFormData({ ...formData, searchResults: results })} />
+                        <SearchBar 
+                            setResults={(results: Product[]) => setFormData({ ...formData, searchResults: results })} 
+                            setSelectedProducts={(selectedProducts: Product[]) => setFormData({ ...formData, selectedProducts: selectedProducts })}
+                        />
+                        
                         <ul>
-                            {formData.searchResults.map(product => (
-                                <li key={product.id} onClick={() => handleProductSelection(product)}>
+                            {formData.selectedProducts.map(product => (
+                                <li key={product.id}>
                                     {product.productName}
                                 </li>
                             ))}
