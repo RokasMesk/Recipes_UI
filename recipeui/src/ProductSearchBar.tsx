@@ -17,6 +17,8 @@ interface ProductSearchBarProps {
 const ProductSearchBar: React.FC<ProductSearchBarProps> = ({ setResults, setSelectedProducts }) => {
     const [input, setInput] = useState("");
     const [products, setProducts] = useState<Product[]>([]);
+    const [selectedProductIds, setSelectedProductIds] = useState(new Set<number>());
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         fetchData(""); // Fetch products initially without search query
@@ -41,6 +43,7 @@ const ProductSearchBar: React.FC<ProductSearchBarProps> = ({ setResults, setSele
                 });
                 setResults(results);
                 setProducts(results);
+                setAllProducts(json);
             })
             .catch((error) => {
                 console.error('There was a problem fetching data:', error);
@@ -58,15 +61,18 @@ const ProductSearchBar: React.FC<ProductSearchBarProps> = ({ setResults, setSele
     };
 
     const handleCheckboxChange = (product: Product) => {
-        const updatedProducts = products.map(p => {
-            if (p.id === product.id) {
-                return { ...p, selected: !p.selected }; // Toggle the selected state
-            }
-            return p;
-        });
-        setProducts(updatedProducts);
-        const selectedProducts = updatedProducts.filter(p => p.selected);
-        setSelectedProducts(selectedProducts); // Update selected products
+        const updatedIds = new Set(selectedProductIds);
+        if (selectedProductIds.has(product.id)) { 
+            updatedIds.delete(product.id);
+        } else {
+            updatedIds.add(product.id);
+        }
+
+        setSelectedProductIds(updatedIds);
+
+        // Update selected products
+        const selectedProducts = allProducts.filter(p => updatedIds.has(p.id));
+        setSelectedProducts(selectedProducts);
     };
 
     return (
@@ -88,7 +94,7 @@ const ProductSearchBar: React.FC<ProductSearchBarProps> = ({ setResults, setSele
                             <label>
                                 <input
                                     type="checkbox"
-                                    checked={product.selected}
+                                    checked={selectedProductIds.has(product.id)}
                                     onChange={() => handleCheckboxChange(product)}
                                 />
                                 {product.productName}

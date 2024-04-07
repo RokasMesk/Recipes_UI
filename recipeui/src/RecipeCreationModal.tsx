@@ -1,11 +1,11 @@
-// RecipeCreationModal.tsx
 import React, { useState, useEffect } from 'react';
 import './RecipeCreationModal.css';
-import SearchBar from './ProductSearchBar';
+import ProductSearchBar from './ProductSearchBar';
 
 interface Product {
     id: number;
     productName: string;
+    selected: boolean;
 }
 
 interface RecipeCreationModalProps {
@@ -36,7 +36,6 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
         console.log('Selected Products:', formData.selectedProducts);
     }, [formData.selectedProducts]);
 
-
     const fetchProducts = async () => {
         try {
             const response = await fetch('https://localhost:7063/api/Product');
@@ -49,7 +48,6 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
             console.error('Error fetching products:', error);
         }
     };
-    
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -136,11 +134,11 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                     </div>
                     <div className="form-group">
                         <label>Select Products:</label>
-                        <SearchBar 
-                            setResults={(results: Product[]) => setFormData({ ...formData, searchResults: results })} 
+                        <ProductSearchBar
+                            setResults={(results: Product[]) => setFormData({ ...formData, searchResults: results })}
                             setSelectedProducts={(selectedProducts: Product[]) => setFormData({ ...formData, selectedProducts: selectedProducts })}
                         />
-                        
+
                         <ul>
                             {formData.selectedProducts.map(product => (
                                 <li key={product.id}>
