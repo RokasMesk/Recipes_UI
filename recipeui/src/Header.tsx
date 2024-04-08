@@ -10,6 +10,18 @@ interface HeaderProps {
   onLoginSuccess: (token: string) => void;
 }
 
+const apiRequest = async (url: string, requestData: any) => {
+  // Implement your API request logic here using fetch or any other library
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestData)
+  });
+  return response;
+};
+
 function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -64,7 +76,7 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
         </div>
       </div>
       <RecipeCreationModal isOpen={isModalOpen} onClose={toggleModal} />
-      <LoginModal isOpen={isLoginOpen} onClose={toggleLogin} isRegistering={isRegistering} toggleRegistering={toggleIsRegistering} onLoginSuccess={(token: string) => { setToken(token); onLoginSuccess(token); }} />
+      <LoginModal isOpen={isLoginOpen} onClose={toggleLogin} isRegistering={isRegistering} toggleRegistering={toggleIsRegistering} apiRequest={apiRequest} onLoginSuccess={(token: string) => { setToken(token); onLoginSuccess(token); }} />
 
     </header>
   );

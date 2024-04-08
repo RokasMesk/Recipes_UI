@@ -6,10 +6,11 @@ interface LoginModalProps {
   onClose: () => void;
   onLoginSuccess: (token: string) => void;
   isRegistering: boolean;
-  toggleRegistering: () => void; // Callback function to toggle registering state
+  toggleRegistering: () => void;
+  apiRequest: (url: string, data: object) => Promise<Response>; // Add apiRequest prop
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering, toggleRegistering }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering, toggleRegistering, apiRequest }) => {
   const [formData, setFormData] = useState({
     identifier: '',
     username: '',
@@ -37,47 +38,41 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
       ? { username: formData.username, email: formData.email, password: formData.password }
       : { identifier: formData.identifier, password: formData.password };
 
-    fetch(`https://localhost:7063/api/User/${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestData)
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Failed to ${endpoint}`);
-      }
-      if (endpoint === 'register') {
-        setError('Registration successful, please log in');
-      } else {
-        setError('');
-        onClose();
-        return response.json();
-      }
-      setFormData({
-        identifier: '',
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
+    apiRequest(`https://localhost:7063/api/User/${endpoint}`, requestData)
+      .then((response: Response) => { // Specify type of response
+        if (!response.ok) {
+          throw new Error(`Failed to ${endpoint}`);
+        }
+        if (endpoint === 'register') {
+          setError('Registration successful, please log in');
+        } else {
+          setError('');
+          onClose();
+          return response.json();
+        }
+        setFormData({
+          identifier: '',
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
+      })
+      .then(data => {
+        if (endpoint === 'login') {
+          const { token, username, email, roles, userId } = data; 
+          localStorage.setItem('username', username);
+          localStorage.setItem('email', email);
+          localStorage.setItem('roles', JSON.stringify(roles));
+          localStorage.setItem('userId', userId); // Store the userId
+          console.log('Login successful:', data);
+          onLoginSuccess(token);
+        }
+      })
+      .catch(error => {
+        console.error(`There was a problem ${endpoint} in:`, error);
+        setError(`Failed to ${endpoint}. Please try again.`);
       });
-    })
-    .then(data => {
-      if (endpoint === 'login') {
-        const { token, username, email, roles, userId } = data; 
-        localStorage.setItem('username', username);
-        localStorage.setItem('email', email);
-        localStorage.setItem('roles', JSON.stringify(roles));
-        localStorage.setItem('userId', userId); // Store the userId
-        console.log('Login successful:', data);
-        onLoginSuccess(token);
-      }
-    })
-    .catch(error => {
-      console.error(`There was a problem ${endpoint} in:`, error);
-      setError(`Failed to ${endpoint}. Please try again.`);
-    });
   }
 
   if (!isOpen) return null;
