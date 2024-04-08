@@ -17,15 +17,15 @@ const ChangePasswordPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch('https://localhost:7063/api/change', {
+      const response = await fetch('https://localhost:7063/api/User/change', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userEmail: localStorage.getItem('email'),
-          currentPassword,
-          newPassword,
+          oldPassword: currentPassword,
+          newPassword: newPassword,
         }),
       });
 
