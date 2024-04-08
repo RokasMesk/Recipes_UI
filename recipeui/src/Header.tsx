@@ -60,6 +60,9 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
           {isLoggedIn ? (
             <>
               <p className='username'>Hello, {localStorage.getItem('username')}</p>
+              <Link to={`/password/${localStorage.getItem("username")}`} className="see-more-button link">
+                  Change password?
+              </Link>
               <Link to={`/recipes/${localStorage.getItem("username")}`} className="see-more-button link">
                   My Recipes
               </Link>
