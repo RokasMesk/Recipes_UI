@@ -1,5 +1,9 @@
+import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import LoginModal from './LoginModal'
+import 'mutationobserver-shim';
+
+global.MutationObserver = window.MutationObserver;
 
 const RegisterData = {
   "username": "laikinas",
@@ -7,42 +11,43 @@ const RegisterData = {
   "password": "password"
 };
 
-// test('opens login modal and checks if elements present', () => {
-//  // Mock onLogout and onLoginSuccess functions
-//  const onLogout = jest.fn();
-//  const onLoginSuccess = jest.fn();
-//  const toggleRegistering = jest.fn();
+test('opens login modal and checks if elements present', () => {
+ // Mock onLogout and onLoginSuccess functions
+ const onLogout = jest.fn();
+ const onLoginSuccess = jest.fn();
+ const toggleRegistering = jest.fn();
 
-//  // Render the Header component with isOpen set to true
-//  render(
-//    <LoginModal 
-//      isOpen={true}
-//      onClose={onLogout} 
-//      onLoginSuccess={onLoginSuccess}
-//      isRegistering={false} 
-//      toggleRegistering={toggleRegistering}
-//    />
-//  );
+ // Render the Header component with isOpen set to true
+ render(
+   <LoginModal 
+     isOpen={true}
+     onClose={onLogout} 
+     onLoginSuccess={onLoginSuccess}
+     isRegistering={false} 
+     toggleRegistering={toggleRegistering}
+     apiRequest={jest.fn()}
+   />
+ );
 
-//  // Assert that the login modal is open
-//  const loginModal = screen.getByTestId('login-modal-form');
-//  expect(loginModal).toBeInTheDocument();
+ // Assert that the login modal is open
+ const loginModal = screen.getByTestId('login-modal-form');
+ expect(loginModal).toBeInTheDocument();
 
-//  // Access elements within the login modal and assert their presence
-//  const usernameInput = screen.getByTestId('login-username-email');
-//  const passwordInput = screen.getByTestId('login-password');
-//  const loginButton = screen.getByTestId('login-register-button');
-//  const redirectRegisterLink = screen.getByTestId('if-not-registered-redirect');
-//  // const loginButtonInModal = screen.getByText('Login'); // Assuming "Login" button text is present in the modal
+ // Access elements within the login modal and assert their presence
+ const usernameInput = screen.getByTestId('login-username-email');
+ const passwordInput = screen.getByTestId('login-password');
+ const loginButton = screen.getByTestId('login-register-button');
+ const redirectRegisterLink = screen.getByTestId('if-not-registered-redirect');
+ // const loginButtonInModal = screen.getByText('Login'); // Assuming "Login" button text is present in the modal
 
-//  expect(usernameInput).toBeInTheDocument();
-//  expect(passwordInput).toBeInTheDocument();
-//  expect(loginButton).toBeInTheDocument();
-//  expect(redirectRegisterLink).toBeInTheDocument();
+ expect(usernameInput).toBeInTheDocument();
+ expect(passwordInput).toBeInTheDocument();
+ expect(loginButton).toBeInTheDocument();
+ expect(redirectRegisterLink).toBeInTheDocument();
 
-//  expect(loginButton.textContent).toBe('Login');
-//  expect(redirectRegisterLink.textContent).toBe('If you aren\'t already registered Click Here.');
-// });
+ expect(loginButton.textContent).toBe('Login');
+ expect(redirectRegisterLink.textContent).toBe('If you aren\'t already registered Click Here.');
+});
 
 test('opens login modal and tries input fields', () => {
  // Mock onLogout and onLoginSuccess functions
