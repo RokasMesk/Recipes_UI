@@ -102,35 +102,35 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Title:</label>
-                        <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
+                        <input type="text" data-testid="title" name="title" value={formData.title} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Short Description:</label>
-                        <input type="text" name="shortDescription" value={formData.shortDescription} onChange={handleInputChange} required />
+                        <input type="text" data-testid="short-description" name="shortDescription" value={formData.shortDescription} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Description:</label>
-                        <textarea name="description" value={formData.description} onChange={handleInputChange} required />
+                        <textarea data-testid="description" name="description" value={formData.description} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Image URL:</label>
-                        <input type="text" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} required />
+                        <input type="text" data-testid="image-url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Preparation:</label>
-                        <textarea name="preparation" value={formData.preparation} onChange={handleInputChange} required />
+                        <textarea data-testid="preparation" name="preparation" value={formData.preparation} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Skill Level:</label>
-                        <input type="text" name="skillLevel" value={formData.skillLevel} onChange={handleInputChange} required />
+                        <input type="text" data-testid="skill-level" name="skillLevel" value={formData.skillLevel} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Time for Cooking (minutes):</label>
-                        <input type="number" name="timeForCooking" value={formData.timeForCooking} onChange={handleInputChange} required />
+                        <input type="number" data-testid="time-for-cooking" name="timeForCooking" value={formData.timeForCooking} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Type:</label>
-                        <input type="number" name="type" value={formData.type} onChange={handleInputChange} required />
+                        <input type="number" data-testid="type" name="type" value={formData.type} onChange={handleInputChange} required />
                     </div>
                     <div className="form-group">
                         <label>Select Products:</label>
