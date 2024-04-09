@@ -12,6 +12,7 @@ import MyFavouritesPage from './MyFavouritesPage';
 import EditRecipe from './EditRecipe';
 
 export interface Recipe {
+  productName: boolean;
   id: number;
   title: string;
   shortDescription: string;
