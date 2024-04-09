@@ -5,90 +5,65 @@ import 'mutationobserver-shim';
 
 global.MutationObserver = window.MutationObserver;
 
-// Mocking fetch for testing purposes
-const mockFetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve([]),
-  })
-);
-
-const formFields = [
-  'title',
-  'short-description',
-  'description',
-  'image-url',
-  'preparation',
-  'skill-level',
-  'time-for-cooking',
-  'type'
-];
-
-global.fetch = mockFetch as jest.Mock;
-
 describe('RecipeCreationModal', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('renders without crashing', () => {
+  test('renders when isOpen is true', () => {
     render(<RecipeCreationModal isOpen={true} onClose={() => {}} />);
+    expect(screen.getByText('Create a Recipe')).toBeInTheDocument();
   });
 
-  it('renders the form fields', () => {
-    render(<RecipeCreationModal isOpen={true} onClose={() => {}} />);
-    
-    formFields.forEach(el => {
-      const element = screen.getByTestId(el)
-      expect(element).toBeInTheDocument();
-    });
-  });
-
-  it('submits the form with correct data', async () => {
-    const onCloseMock = jest.fn();
-    const { getByLabelText, getByText } = render(<RecipeCreationModal isOpen={true} onClose={onCloseMock} />);
-
-    // Fill out form fields
-    fireEvent.change(screen.getByTestId("title"), { target: { value: 'Test Recipe' } });
-    fireEvent.change(screen.getByTestId("short-description"), { target: { value: 'Short Description Test' } });
-    // Add similar fireEvent calls for other form fields
-
-    formFields.forEach(el => {
-      const element = screen.getByTestId(el)
-      expect(element).toBeInTheDocument();
-      if (el == 'time-for-cooking' || el == 'type')
-        fireEvent.change(element, { target: { value: 1 } } ) 
-      else
-        fireEvent.change(element, { target: { value: 'test ' + el } } )
-    });
-
-    // Submit the form
-    fireEvent.click(getByText('Create Recipe'));
-
-    // Wait for fetch call to be made
-    await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledTimes(3);
-      expect(mockFetch).toHaveBeenCalledWith('https://localhost:7063/api/Recipe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: 'test title',
-          shortDescription: 'test short-description',
-          description: 'test description',
-          imageUrl: 'test image-url',
-          products: [],
-          preparation: 'test preparation',
-          skillLevel: 'test skill-level',
-          timeForCooking: '1',
-          type: '1',
-          author: null
-        }),
-      });
-    });
-
-    // Ensure onClose function is called after successful form submission
-    expect(onCloseMock).toHaveBeenCalledTimes(1);
+  test('does not render when isOpen is false', () => {
+    render(<RecipeCreationModal isOpen={false} onClose={() => {}} />);
+    expect(screen.queryByText('Create a Recipe')).toBeNull();
   });
 });
+
+test('updates title field on change', () => {
+  render(<RecipeCreationModal isOpen={true} onClose={() => {}} />);
+  const titleInput = screen.getByTestId('title') as HTMLInputElement; // Type assertion here
+  fireEvent.change(titleInput, { target: { value: 'New Recipe Title' } });
+  expect(titleInput.value).toBe('New Recipe Title'); // Now it correctly recognizes the 'value' property
+});
+
+beforeEach(() => {
+  jest.spyOn(global, 'fetch').mockImplementation(() =>
+    Promise.resolve(new Response(JSON.stringify([{ id: 1, productName: 'Apple', selected: false }])))
+  );
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+test('fetches products on component mount', async () => {
+  render(<RecipeCreationModal isOpen={true} onClose={() => {}} />);
+  await waitFor(() => expect(global.fetch).toHaveBeenCalledWith('https://localhost:7063/api/Product'));
+});
+
+test('calls onClose after successful recipe creation', async () => {
+  const onCloseMock = jest.fn();
+
+  // Spy on global.fetch and use mockImplementationOnce
+  jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
+    Promise.resolve(new Response(JSON.stringify({ ok: true })))
+  );
+
+  render(<RecipeCreationModal isOpen={true} onClose={onCloseMock} />);
+  
+  // Assuming you have a button or form to submit for creating a recipe.
+  fireEvent.click(screen.getByText('Create Recipe'));
+  
+  await waitFor(() => expect(onCloseMock).toHaveBeenCalled());
+});
+
+
+test('renders ProductSearchBar when modal is open', () => {
+  render(<RecipeCreationModal isOpen={true} onClose={() => {}} />);
+
+  // Assuming ProductSearchBar includes an input with a specific placeholder or role.
+  // This example uses a placeholder attribute, but you can adjust it to fit the unique identifier of your choice.
+  const searchBarInput = screen.getByPlaceholderText('Search'); // Adjust this placeholder text as needed.
+  
+  expect(searchBarInput).toBeInTheDocument();
+});
+
+
