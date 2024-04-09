@@ -10,6 +10,7 @@ import MyRecipesPage from './MyRecipesPage';
 import ProfilePage from './ProfilePage';
 import MyFavouritesPage from './MyFavouritesPage';
 import EditRecipe from './EditRecipe';
+import ChangePasswordPage from './ChangePasswordPage';
 
 export interface Recipe {
   id: number;
@@ -88,6 +89,7 @@ function App({ isLoggedIn, onLogout }: AppProps) {
             <Route path={`/recipes/${localStorage.getItem('username')}`} element={<MyRecipesPage />} />
             <Route path={`/favourites/${localStorage.getItem('username')}`} element={<MyFavouritesPage />} />
             <Route path="/profile/:username" element={<ProfilePage />} />
+            <Route path="/password/:username" element={<ChangePasswordPage/>} />
           </Routes>
         </div>
       </div>
