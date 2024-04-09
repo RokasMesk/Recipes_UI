@@ -173,12 +173,6 @@ test('opens register modal and accesses its elements', () => {
   expect(passwordRepeatInput).toHaveValue(RegisterData.password);
 });
 
-test('logins and logs out', () => {
-    
-});
-
-
-
 describe('LoginModal (submit functionality)', () => {
   it('should call handleSubmit for login with correct data when submitted', async () => {
     const mockApiRequest = jest.fn().mockResolvedValue({
