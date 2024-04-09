@@ -12,7 +12,7 @@ interface LoginModalProps {
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess, isRegistering, toggleRegistering, apiRequest }) => {
   const [formData, setFormData] = useState({
-    identifier: '',
+    identifier: '', 
     username: '',
     email: '',
     password: '',
