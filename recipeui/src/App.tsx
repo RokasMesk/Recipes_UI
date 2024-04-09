@@ -13,6 +13,7 @@ import EditRecipe from './EditRecipe';
 import ChangePasswordPage from './ChangePasswordPage';
 
 export interface Recipe {
+  productName: boolean;
   id: number;
   title: string;
   shortDescription: string;
