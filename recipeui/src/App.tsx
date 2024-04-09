@@ -24,6 +24,8 @@ export interface Recipe {
   timeForCooking: number;
   type: { id: number; type: string };
   recipeCreatorUserName: string;
+  rating: number;
+  ratedPeopleCount: number;
 }
 
 interface AppProps {
@@ -45,6 +47,7 @@ function App({ isLoggedIn, onLogout }: AppProps) {
         return response.json();
       })
       .then((data: Recipe[]) => {
+        console.log('Fetched data:', data);
         setRecipes(data);
       })
       .catch(error => {
@@ -55,6 +58,7 @@ function App({ isLoggedIn, onLogout }: AppProps) {
   const handleLoginSuccess = () => {
     isLoggedIn=true;
     localStorage.setItem('isLoggedIn', 'true');
+    console.log('nu prisijunge')
   };
 
   const handleLogout = () => {

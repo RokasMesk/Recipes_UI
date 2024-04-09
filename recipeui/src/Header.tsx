@@ -28,12 +28,15 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
+  const isReallyLoggedIn = localStorage.getItem('isLoggedIn');
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   const toggleLogin = () => {
     setIsLoginOpen(!isLoginOpen);
+    console.log(isLoggedIn)
   };
 
   const toggleIsRegistering = () => {
@@ -56,8 +59,7 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
          <Link className='link' to={'/'} >Receptai</Link>
         </div>
         <div className="right">
-        
-          {isLoggedIn ? (
+          {isReallyLoggedIn ? (
             <>
               <p className='username'>Hello, {localStorage.getItem('username')}</p>
               <Link to={`/password/${localStorage.getItem("username")}`} className="see-more-button link">

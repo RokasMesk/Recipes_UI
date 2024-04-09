@@ -5,6 +5,7 @@ import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import Rating from '@mui/material/Rating';
 
 interface RecipeBoxProps {
   recipe: Recipe;
@@ -13,6 +14,8 @@ interface RecipeBoxProps {
 function RecipeBox({ recipe }: RecipeBoxProps) {
   const [userFavorites, setUserFavorites] = useState<Recipe[]>([]);
   const [isLiked, setIsLiked] = useState(false); // Initially not liked
+  const [value, setValue] = useState<number | null>(0); // Initial value for rating
+  const [isRated, setIsRated] = useState<number | null>(-1);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -37,6 +40,28 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
       }
     };
 
+    const fetchRatingStatus = async () => {
+      try {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+          return; // Do nothing if user is not logged in
+        }
+
+        const response = await fetch(`https://localhost:7063/api/Recipe/GetRating?userId=${userId}&id=${recipe.id}`);
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch rating status');
+        }
+  
+        const ratingData = await response.json();
+        setIsRated(ratingData); 
+        console.log(ratingData);// Assuming ratingData.rating returns the rating value if rated, otherwise -1
+      } catch (error) {
+        console.error('Error fetching rating status:', error);
+      }
+    };
+  
+    fetchRatingStatus();
     fetchFavorites();
   }, [recipe.id]); // Fetch favorites when recipe ID changes
 
@@ -80,6 +105,8 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
     navigate(`/profile/${recipe.recipeCreatorUserName}`); // Assuming 'recipeCreatorId' exists
   };
 
+  
+
   return (
     <div className="recipe-box">
       { localStorage.getItem('isLoggedIn') === 'true' &&
@@ -89,7 +116,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
       }
       
       <img src={recipe.imageUrl} alt={recipe.shortDescription} />
-      <div className="recipe-info">       
+      <div className="recipe-info">   
         <h3>{recipe.title }</h3> 
         <p>{recipe.description}</p>
         <h4>Products:</h4>
@@ -99,6 +126,42 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
           ))}
         </ul>
         <h3 onClick={handleAuthorClick} className="author-link">Created by: {recipe.recipeCreatorUserName}</h3>
+        <h4>Bendras ivertinimas:</h4>
+        <Rating
+          name="simple-controlled"
+          value={recipe.rating}
+          readOnly
+        />
+        <br/>
+        <h4>Mano ivertinimas:</h4>
+        <Rating
+          name="simple-controlled"
+          value={isRated}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            setIsRated(newValue)
+            fetch('https://localhost:7063/api/Recipe/Rate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  userId: localStorage.getItem('userId'),
+                  recipeId: recipe.id,
+                  rating: newValue,
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to rate recipe');
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem rating the recipe:', error);
+                });
+              }}
+        />
+        <br/>
         <Link to={`/recipe/${recipe.id}`} className="see-more-button">
           See more
         </Link>
