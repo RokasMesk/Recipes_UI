@@ -31,28 +31,26 @@ describe('Header Component', () => {
         fields.forEach(el => {
             expect(screen.getByTestId(el)).toBeVisible
         });
-
-        it('should display user information and logout button when logged in', () => {
-            Storage.prototype.getItem = jest.fn(() => 'true'); // Mock localStorage for isLoggedIn
-            renderHeader(true);
-            expect(screen.getByText(/logout/i)).toBeInTheDocument();
-            expect(screen.getByText(/hello,/i)).toBeInTheDocument(); // Assuming username is set correctly in localStorage
-        });
-
-        it('opens the recipe creation modal', async () => {
-            renderHeader();
-            const createRecipeButton = screen.getByTestId('create-recipe-button');
-            fireEvent.click(createRecipeButton);
-
-            const fields = ['title', 'time-for-cooking', 'description', 'short-description'];
-
-            fields.forEach(el => {
-                expect(screen.getByTestId(el)).toBeVisible
-            });
-        });
-
-
     })
+
+    it('should display user information and logout button when logged in', () => {
+        Storage.prototype.getItem = jest.fn(() => 'true'); // Mock localStorage for isLoggedIn
+        renderHeader(true);
+        expect(screen.getByText(/logout/i)).toBeInTheDocument();
+        expect(screen.getByText(/hello,/i)).toBeInTheDocument(); // Assuming username is set correctly in localStorage
+    });
+
+    it('opens the recipe creation modal', async () => {
+        renderHeader();
+        const createRecipeButton = screen.getByTestId('create-recipe-button');
+        fireEvent.click(createRecipeButton);
+
+        const fields = ['title', 'time-for-cooking', 'description', 'short-description'];
+
+        fields.forEach(el => {
+            expect(screen.getByTestId(el)).toBeVisible
+        });
+    });
 
     it('logs out correctly', () => {
         const { mockOnLogout } = renderHeader(true);
