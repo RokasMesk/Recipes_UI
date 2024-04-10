@@ -67,7 +67,7 @@ const ChangePasswordPage: React.FC = () => {
            <label htmlFor="confirm-password">Confirm New Password:</label>
            <input type="password" id="confirm-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
          </div>
-         <button type="submit" className="element">Change Password</button>
+         <button data-testid="change-password" type="submit" className="element">Change Password</button>
         </form>
       </div>
   );
