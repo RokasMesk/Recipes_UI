@@ -110,7 +110,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
   return (
     <div className="recipe-box">
       { localStorage.getItem('isLoggedIn') === 'true' &&
-        <button className="like-button" onClick={toggleLike} >
+        <button data-testid="like-button" className="like-button" onClick={toggleLike} >
           <FontAwesomeIcon icon={isLiked ? faHeartSolid : faHeartRegular} color={isLiked ? 'red' : 'gray'} size="2x"/> 
         </button>
       }
@@ -125,7 +125,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
             <li key={product.id}>{product.productName}</li>
           ))}
         </ul>
-        <h3 onClick={handleAuthorClick} className="author-link">Created by: {recipe.recipeCreatorUserName}</h3>
+        <h3 data-testid="click-author" onClick={handleAuthorClick} className="author-link">Created by: {recipe.recipeCreatorUserName}</h3>
         <h4>Bendras ivertinimas:</h4>
         <Rating
           name="simple-controlled"
@@ -135,6 +135,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
         <br/>
         <h4>Mano ivertinimas:</h4>
         <Rating
+        data-testid="user-rating"
           name="simple-controlled"
           value={isRated}
           onChange={(event, newValue) => {
