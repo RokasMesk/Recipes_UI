@@ -117,7 +117,11 @@ function EditRecipe() {
         }
         // Handle successful edit, e.g., display a success message
         // Redirect to the recipe details page after editing
+        
         window.location.href = `/recipe/${id}`;
+        for(let i=0; i < 50; i++) {
+          console.log(window.location.href);
+        }
       })
       .catch(error => {
         console.error('There was a problem editing the recipe:', error);
@@ -134,31 +138,32 @@ function EditRecipe() {
       <h2>Edit Recipe</h2>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
         <label>Title:</label>
-        <input type="text" name="title" value={editedRecipeData.title} onChange={handleChange} />
+        <input type="text" data-testid="edit-title" name="title" value={editedRecipeData.title} onChange={handleChange} />
         
         <label>Short Description:</label>
-        <textarea name="shortDescription" value={editedRecipeData.shortDescription} onChange={handleChange} />
+        <textarea data-testid="edit-short-description" name="shortDescription" value={editedRecipeData.shortDescription} onChange={handleChange} />
         
         <label>Description:</label>
-        <textarea name="description" value={editedRecipeData.description} onChange={handleChange} />
+        <textarea data-testid="edit-description" name="description" value={editedRecipeData.description} onChange={handleChange} />
         
         <label>Preparation:</label>
-        <textarea name="preparation" value={editedRecipeData.preparation} onChange={handleChange} />
+        <textarea data-testid="edit-preparation" name="preparation" value={editedRecipeData.preparation} onChange={handleChange} />
         
         <label>Skill Level:</label>
-        <select name="skillLevel" value={editedRecipeData.skillLevel} onChange={handleChange}>
+        <select data-testid="edit-skill-level" name="skillLevel" value={editedRecipeData.skillLevel} onChange={handleChange}>
           <option value="Beginner">Beginner</option>
           <option value="Intermediate">Intermediate</option>
           <option value="Advanced">Advanced</option>
         </select>
         
         <label>Time for Cooking (minutes):</label>
-        <input type="number" name="timeForCooking" value={editedRecipeData.timeForCooking} onChange={handleChange} />
+        <input data-testid="edit-time-for-cooking" type="number" name="timeForCooking" value={editedRecipeData.timeForCooking} onChange={handleChange} />
         
         <label>Products:</label>
         {availableProducts.map(product => (
           <div key={product.id}>
             <input
+             data-testid="edit-products"
               type="checkbox"
               name="products"
               value={product.id.toString()}
@@ -170,16 +175,16 @@ function EditRecipe() {
         ))}
         
         <label>Type:</label>
-        <select name="type" value={editedRecipeData.type} onChange={handleChange}>
+        <select data-testid="edit-type" name="type" value={editedRecipeData.type} onChange={handleChange}>
           {availableTypes.map(type => (
             <option key={type.id} value={type.id}>{type.typeName}</option>
           ))}
         </select>
   
         <label>Photo URL:</label>
-        <input type="text" name="imageUrl" value={editedRecipeData.imageUrl} onChange={handleChange} />
+        <input data-testid="edit-image-url" type="text" name="imageUrl" value={editedRecipeData.imageUrl} onChange={handleChange} />
         
-        <button type="submit">Save Changes</button>
+        <button data-testid="edit-submit" type="submit">Save Changes</button>
         <Link to={`/recipe/${id}`}>Cancel</Link>
       </form>
     </div>
