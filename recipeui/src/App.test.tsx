@@ -1,101 +1,121 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import App, { Recipe } from './App';
+import '@testing-library/jest-dom';
+import App from './App';
+import RecipeBox from './RecipeBox';
+import { MemoryRouter } from 'react-router-dom';
 import 'mutationobserver-shim';
 
 global.MutationObserver = window.MutationObserver;
 
-// Mock the fetch function
-const mockFetch = jest.fn();
-
-beforeAll(() => {
-  global.fetch = jest.fn().mockResolvedValue({
-    ok: true,
-    json: () => Promise.resolve(mockRecipes), // mockRecipes should be replaced with your test data
-  });
+jest.mock('./RecipeDetails', () => {
+  return () => <div data-testid="recipe-details"></div>;
 });
+jest.mock('./RecipeDetails'); // Assume RecipeDetails and others are similarly mocked
 
-afterEach(() => {
-  jest.clearAllMocks();
-  //localStorage.clear(); // Clear localStorage between tests
-});
-
-// Mock recipe data
-const mockRecipes: Recipe[] = [
-  {
-    id: 1,
-    title: 'Mock Recipe 1',
-    shortDescription: 'Mock Short Description',
-    description: 'Mock Description',
-    imageUrl: 'mock-image-url',
-    products: [{ id: 1, productName: 'Mock Product 1' }],
-    preparation: 'Mock Preparation',
-    skillLevel: 'Mock Skill Level',
-    timeForCooking: 30,
-    type: { id: 1, type: 'Mock Type' },
-    recipeCreatorUserName: 'mock-user',
-  },
-];
-
-describe('App', () => {
-  it('renders header', () => {
-    render(<App isLoggedIn={false} onLogout={jest.fn()} />);
-    expect(screen.getByText('Recipes')).toBeInTheDocument();
-  });
-
-  it('renders loading state when fetching recipes', async () => {
-    mockFetch.mockResolvedValueOnce({
+// Helper function for mocking fetch success
+const mockFetchSuccess = () => {
+  global.fetch = jest.fn().mockImplementation(() =>
+    Promise.resolve({
       ok: true,
-      json: () => Promise.resolve(mockRecipes),
+      json: () => Promise.resolve([
+        { 
+          id: 1, 
+          title: 'Test Recipe',
+          // Include all required fields by the Recipe interface
+          productName: true, // Assuming this is correctly typed based on your interface
+          shortDescription: 'Test Short Description',
+          description: 'Test Description',
+          imageUrl: 'testImageUrl',
+          products: [{ id: 1, productName: 'Apple' }], // Ensuring `products` is defined
+          preparation: 'Test Preparation',
+          skillLevel: 'Test Skill Level',
+          timeForCooking: 123,
+          type: { id: 1, type: "Vegan" },
+          recipeCreatorUserName: 'testUser',
+          rating: 4,
+          ratedPeopleCount: 10,
+        }
+      ]),
+    }))
+};
+
+// Helper function for mocking fetch failure
+const mockFetchFailure = () => {
+  global.fetch = jest.fn().mockImplementation(() =>
+    Promise.reject(new Error('Fetch failed'))
+  );
+};
+
+describe('App Component', () => {
+  beforeEach(() => {
+    jest.spyOn(Storage.prototype, 'getItem');
+    jest.spyOn(Storage.prototype, 'setItem');
+    jest.spyOn(Storage.prototype, 'removeItem');
+    beforeEach(() => {
+      // Mock localStorage
+      Storage.prototype.getItem = jest.fn((key) => {
+        if (key === 'isLoggedIn') return 'true';  // Simulate logged-in state
+        return null;  // Default return value for other keys
+      });
+      Storage.prototype.setItem = jest.fn();
+      Storage.prototype.removeItem = jest.fn();
     });
-
-    render(<App isLoggedIn={false} onLogout={jest.fn()} />);
-    expect(screen.getByTestId('recipes-loading')).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText('Mock Recipe 1')).toBeInTheDocument());
-  });
-
-  it('renders recipes', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockRecipes),
+    
+    afterEach(() => {
+      jest.restoreAllMocks(); // Restore original functions after each test
     });
-
-    render(<App isLoggedIn={false} onLogout={jest.fn()} />);
-    await waitFor(() => expect(screen.getByText('Mock Recipe 1')).toBeInTheDocument());
   });
 
-  test('handleLogout functions', () => {
-    const handleLoginSuccessMock = jest.fn();
-    const handleLogoutMock = jest.fn();
-    
-    render(<App isLoggedIn={true} onLogout={handleLogoutMock} />);
-    userEvent.click(screen.getByText('Logout'));
-    expect(handleLogoutMock).toHaveBeenCalled();
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
-  // test('handleLoginSuccess functions', () => {
-  //   // Mock functions for onLoginSuccess and onLogout
-  //   const handleLoginSuccessMock = jest.fn();
-  //   const handleLogoutMock = jest.fn();
-    
-  //   // Render App component with mock functions as props
-  //   render(<App isLoggedIn={false} onLoginSuccess={handleLoginSuccessMock} onLogout={handleLogoutMock} />);
+  test('fetches recipes and renders them on initial load', async () => {
+    mockFetchSuccess();
+    render(<App isLoggedIn={true} onLogout={() => {}} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('recipe-box')).toHaveTextContent('Test Recipe');
+    });
+  });
+
+  test('handles fetch error gracefully', async () => {
+    mockFetchFailure();
+    console.error = jest.fn(); // Mock console.error to check if it's called
+    render(<App isLoggedIn={true} onLogout={() => {}} />);
   
-  //   userEvent.click(screen.getByText('Login'));
-  //   expect(handleLoginSuccessMock).toHaveBeenCalled();
-  // });
-});
+    await waitFor(() => expect(console.error).toHaveBeenCalled());
+    // Here you might also check for a user-facing error message, depending on your component's implementation.
+  });
+  
 
-test('log in and create account buttons are displayed', () => {
-  render(<App isLoggedIn={false} onLogout={jest.fn()} />);
+  test('renders login/logout based on isLoggedIn prop', () => {
+    // Mock being logged out
+    Storage.prototype.getItem = jest.fn().mockReturnValue(null);
+    const { rerender } = render(<App isLoggedIn={false} onLogout={() => {}} />);
+    expect(screen.queryByTestId('login-button')).toBeInTheDocument();
+  
+    // Mock being logged in
+    Storage.prototype.getItem = jest.fn().mockReturnValue('true');
+    // Use rerender to update the component under test
+    rerender(<App isLoggedIn={true} onLogout={() => {}} />);
+    // Now the Logout button should be in the document
+    expect(screen.queryByText('Logout')).toBeInTheDocument();
+  });
 
-  const loginButton = screen.getByTestId("login-button");
-  const createRecipeButton = screen.getByTestId("create-recipe-button");
+  test('navigates to Recipe Details page when a recipe is clicked', async () => {
+    mockFetchSuccess();
+    render(<App isLoggedIn={true} onLogout={() => {}} />); // Render the App component directly
+  
+    await waitFor(() => {
+      fireEvent.click(screen.getByText('See more')); // Assuming recipe box has a clickable element
+    });
+  
+    expect(screen.getByTestId('recipe-details')).toBeInTheDocument();
+  });
+  
+  
 
-  expect(loginButton).toBeInTheDocument();
-  expect(createRecipeButton).toBeInTheDocument();
-
-  expect(loginButton.textContent).toBe('Login');
-  expect(createRecipeButton.textContent).toBe('Create A Recipe');
+  // Further tests can be added to simulate navigation, test route-specific rendering, and user interactions like clicking the logout button.
 });

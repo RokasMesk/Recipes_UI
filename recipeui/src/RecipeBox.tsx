@@ -108,7 +108,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
   
 
   return (
-    <div className="recipe-box">
+    <div data-testid="recipe-box" className="recipe-box">
       { localStorage.getItem('isLoggedIn') === 'true' &&
         <button data-testid="like-button" className="like-button" onClick={toggleLike} >
           <FontAwesomeIcon icon={isLiked ? faHeartSolid : faHeartRegular} color={isLiked ? 'red' : 'gray'} size="2x"/> 
