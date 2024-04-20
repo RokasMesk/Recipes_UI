@@ -48,7 +48,10 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
             console.error('Error fetching products:', error);
         }
     };
-
+    const handleCreateProductAndClose = () => {
+        handleCreateProduct();
+        onClose();
+    };
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -155,7 +158,7 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                     <button type="submit">Create Recipe</button>
                 </form>
                 <div className='form-group'>Cant find product?
-                    <button type='submit' onClick={handleCreateProduct}>Create product</button>
+                    <button type='submit' onClick={handleCreateProductAndClose}>Create product</button>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ import MyFavouritesPage from './MyFavouritesPage';
 import EditRecipe from './EditRecipe';
 import ChangePasswordPage from './ChangePasswordPage';
 import CreateProduct from './CreateProduct';
+import NonVerifiedProducts from './NonVerifiedProducts';
 
 export interface Recipe {
   productName: boolean;
@@ -97,6 +98,7 @@ function App({ isLoggedIn, onLogout }: AppProps) {
             <Route path="/profile/:username" element={<ProfilePage />} />
             <Route path="/password/:username" element={<ChangePasswordPage/>} />
             <Route path="/product/create" element={<CreateProduct/>} />
+            <Route path="/nonverified" element={<NonVerifiedProducts/>}/>
           </Routes>
         </div>
       </div>
