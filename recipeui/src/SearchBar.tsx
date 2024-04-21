@@ -129,7 +129,7 @@ function SearchBar({ setResults }: SearchBarProps) {
         Toggle Search Mode
       </button>
       {searchMode === SearchMode.ProductName && (
-        <div>
+        <div className='searchModeOn'>
           <h3>Select Products:</h3>
           {products.map(product => (
             <div key={product.id}>

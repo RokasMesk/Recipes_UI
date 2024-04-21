@@ -46,12 +46,10 @@
 
 .login:hover {
   background-color: #E1D5B4;
-  padding: 12px 20px; /* Increase padding */
 }
 
 .createRecipe:hover {
   background-color: #E1D5B4;
-  padding: 12px 20px; /* Increase padding */
 }
 
 .recipe-container {
@@ -292,4 +290,15 @@ background-color: #efefef;
 }
 .product-button-recipe {
   background-color: #143109 !important;
+}
+
+.filter-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchModeOn {
+  z-index: 5;
 }

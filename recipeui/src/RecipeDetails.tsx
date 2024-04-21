@@ -4,6 +4,7 @@ import { useParams} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Recipe } from './App';
 import './RecipeDetails.css'; // Import CSS for styling
+import CommentsSection from './CommentsSection';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -76,6 +77,7 @@ function RecipeDetails() {
   }
 
   return (
+    <div>
     <div className="recipe-details-container-end">
       <h3 className='author-end'>Recipe author: {recipe.recipeCreatorUserName}</h3>
       <h2 className="title-end">Title: {recipe.title}</h2>
@@ -111,6 +113,8 @@ function RecipeDetails() {
       {showEditButton && (
         <button className="product-button-recipe" type="submit" onClick={handleEdit}>Edit</button>
       )}
+    </div>
+    <CommentsSection recipeId={recipe.id} />
     </div>
   );
 }
