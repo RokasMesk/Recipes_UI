@@ -111,7 +111,7 @@ function SearchBar({ setResults }: SearchBarProps) {
 
   return (
     <div className="search-input-main">
-      <input
+      <input className="search-input"
         placeholder={`Search by ${searchMode}`}
         value={searchMode === SearchMode.ProductName ? productInput : input}
         onChange={(e) => {
