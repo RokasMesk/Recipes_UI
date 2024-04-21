@@ -62,6 +62,9 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
           {isReallyLoggedIn ? (
             <>
               <p className='username'>Hello, {localStorage.getItem('username')}</p>
+              {localStorage.getItem("roles") && JSON.parse(localStorage.getItem("roles") ?? "[]").includes("Admin") && (
+              <Link to="/nonverified" className='see-more-button link'>Verify products</Link>
+              )}
               <Link to={`/password/${localStorage.getItem("username")}`} className="see-more-button link">
                   Change password?
               </Link>
