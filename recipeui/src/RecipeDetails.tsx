@@ -76,19 +76,21 @@ function RecipeDetails() {
   }
 
   return (
-    <div className="recipe-details-container">
-      <h3 className='author'>Recipe author: {recipe.recipeCreatorUserName}</h3>
-      <h2 className="title">Title: {recipe.title}</h2>
-      <div className="image-container">
-        <img src={recipe.imageUrl} alt={recipe.title} className="image" />
+    <div className="recipe-details-container-end">
+      <h3 className='author-end'>Recipe author: {recipe.recipeCreatorUserName}</h3>
+      <h2 className="title-end">Title: {recipe.title}</h2>
+      <div className="image">
+        <img src={recipe.imageUrl} alt={recipe.title} className="image-container-end" />
       </div>
-      <div className="description">
+      <div className="description-end">
         <h3>Short Description:</h3>
         <p>{recipe.shortDescription}</p>
+      </div>
+      <div className="short-end">
         <h3>Description:</h3>
         <p>{recipe.description}</p>
       </div>
-      <div className="products">
+      <div className="products-end">
         <h3>Products:</h3>
         <ul>
           {recipe.products.map(product => (
@@ -96,11 +98,11 @@ function RecipeDetails() {
           ))}
         </ul>
       </div>
-      <div className="preparation">
+      <div className="preparation-end">
         <h3>Preparation:</h3>
         <p>{recipe.preparation}</p>
       </div>
-      <div className="additional-details">
+      <div className="additional-details-end">
         <p><strong>Skill Level:</strong> {recipe.skillLevel}</p>
         <p><strong>Time for Cooking:</strong> {recipe.timeForCooking} minutes</p>
         <p><strong>Type: </strong> {recipe.type.type}</p>

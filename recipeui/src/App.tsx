@@ -139,7 +139,7 @@ function App({ isLoggedIn, onLogout }: AppProps) {
         <div className="search-bar-container">
           <SearchResultsList results={results} />
         </div>
-        <div className="recipe-container">
+        <div className="recipe-container-front">
           <Routes>
             <Route
               path="/"

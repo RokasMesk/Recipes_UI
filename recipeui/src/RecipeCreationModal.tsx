@@ -157,8 +157,8 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                     
                     <button className="element-button-change" type="submit">Create Recipe</button>
                 </form>
-                <div className='form-group'>Cant find product?
-                    <button type='submit' onClick={handleCreateProductAndClose}>Create product</button>
+                <div className='form-group-end'>Cant find product?
+                    <button className="product-button" type='submit' onClick={handleCreateProductAndClose}>Create product</button>
                 </div>
             </div>
         </div>

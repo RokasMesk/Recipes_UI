@@ -57,9 +57,11 @@
 .recipe-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  padding-left: 40px; /* Add padding to create space on the left */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  padding-left: 40px;
 }
+
 
 .recipe-box {
   position: relative;
@@ -241,13 +243,49 @@ background-color: #efefef;
 .search-bar{
   padding-left: 75px;
 }
-.search-input-main{
+.search-input-main {
   background-color: white;
-  width: 90%;
+  width: 75%;
   border-radius: 10px;
   height: 2.5rem;
-  padding: 0 15px;
   box-shadow: 0px 0px 8px #ddd;
   display: flex;
   align-items: center;
+  padding-left: 50px; /* Adjust padding to your preference */
+  box-sizing: border-box; /* Include padding and border in width calculation */
+}
+.product-button{
+  background-color: #143109 !important;
+}
+.form-group-end {
+  padding-top: 30px;
+}
+.recipe-details-container-end {
+  background-color: #0056b3;
+  display: flex;
+  flex-direction: column; /* Align items vertically */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Set a minimum height to contain all items */
+  padding: 20px; /* Add padding to prevent items from touching the edges */
+}
+
+
+.image-container-end {
+  width: 50%;
+  height: 30%;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+}
+.description-end {
+  background-color: #ccc;
+}
+.recipe-container-front{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  padding-left: 40px;
 }
