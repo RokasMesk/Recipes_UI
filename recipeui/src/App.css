@@ -187,6 +187,7 @@ background-color: #efefef;
   position: absolute;
   top: 0;
   right: 0;
+  color: #143109 !important;
 }
 
 .author-link {
@@ -315,4 +316,7 @@ background-color: #efefef;
 }
 .searchModeOn {
   z-index: 5;
+}
+.svg-inline--fa {
+  color: #143109;
 }
