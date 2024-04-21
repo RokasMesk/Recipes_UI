@@ -12,8 +12,8 @@ const SearchResultsList: React.FC<SearchResultsListProps> = ({ results }) => {
       {
         results.map((result, id) => {
           return <><div className="search-result"key={id}> {result.title} </div> 
-          <Link to={`/recipe/${result.id}`} className="see-more-button">
-          Read more
+          <Link to={`/recipe/${result.id}`} className="see-more-button-search">
+          Plačiau apie receptą
 
           </Link>
           </>

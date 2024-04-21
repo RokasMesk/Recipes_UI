@@ -118,14 +118,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
       <img src={recipe.imageUrl} alt={recipe.shortDescription} />
       <div className="recipe-info">   
         <h3>{recipe.title }</h3> 
-        <p>{recipe.description}</p>
-        <h4>Products:</h4>
-        <ul>
-          {recipe.products.map(product => (
-            <li key={product.id}>{product.productName}</li>
-          ))}
-        </ul>
-        <h3 data-testid="click-author" onClick={handleAuthorClick} className="author-link">Created by: {recipe.recipeCreatorUserName}</h3>
+        <h3 data-testid="click-author" onClick={handleAuthorClick} className="author-link">Autorius: {recipe.recipeCreatorUserName}</h3>
         <h4>Bendras ivertinimas:</h4>
         <Rating
           name="simple-controlled"
@@ -164,7 +157,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
         />
         <br/>
         <Link to={`/recipe/${recipe.id}`} className="see-more-button">
-          See more
+          Plačiau apie receptą
         </Link>
         
       </div>

@@ -147,7 +147,7 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                             ))}
                         </ul>
                     </div>
-                    <button type="submit">Create Recipe</button>
+                    <button className="element-button-change" type="submit">Create Recipe</button>
                 </form>
             </div>
         </div>

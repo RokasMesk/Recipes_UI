@@ -50,7 +50,7 @@ const ChangePasswordPage: React.FC = () => {
 
   return (
 
-    <div className="container">
+    <div className="container-change">
       <div className="form-container"></div>
         <h2 className="element">Change Password</h2>
         {errorMessage && <div className="error">{errorMessage}</div>}
@@ -67,7 +67,7 @@ const ChangePasswordPage: React.FC = () => {
            <label htmlFor="confirm-password">Confirm New Password:</label>
            <input type="password" id="confirm-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
          </div>
-         <button data-testid="change-password" type="submit" className="element">Change Password</button>
+         <button data-testid="change-password" type="submit" className="element-button-change">Change Password</button>
         </form>
       </div>
   );

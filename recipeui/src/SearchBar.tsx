@@ -110,7 +110,7 @@ function SearchBar({ setResults }: SearchBarProps) {
   };
 
   return (
-    <div className="search-input">
+    <div className="search-input-main">
       <input
         placeholder={`Search by ${searchMode}`}
         value={searchMode === SearchMode.ProductName ? productInput : input}
@@ -125,7 +125,7 @@ function SearchBar({ setResults }: SearchBarProps) {
       <button onClick={searchMode === SearchMode.ProductName ? handleProductSearch : undefined} className="search-button">
         <FontAwesomeIcon icon={faSearch} className="search-icon" />
       </button>
-      <button onClick={toggleSearchMode} className="toggle-button">
+      <button onClick={toggleSearchMode} className="on">
         Toggle Search Mode
       </button>
       {searchMode === SearchMode.ProductName && (

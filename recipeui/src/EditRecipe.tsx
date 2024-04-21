@@ -133,7 +133,7 @@ function EditRecipe() {
   }
 
   return (
-    <div style={{ textAlign: 'center', margin: 'auto', maxWidth: '600px' }}>
+    <div className="class-kazkur" style={{ textAlign: 'center', margin: 'auto', maxWidth: '600px' }}>
       {/* Form for editing recipe details */}
       <h2>Edit Recipe</h2>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>

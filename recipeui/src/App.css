@@ -7,12 +7,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #282c34;
+  background-color: #143109;
   color: white;
 }
 .username {
   display: inline-block;
-  margin-right: 10px; /* Adjust the margin as needed */
+  margin-right: 10px;
 }
 .left {
   flex: 1;
@@ -27,7 +27,7 @@
 
 .createRecipe {
   padding: 10px 20px;
-  background-color: #eea913;
+  background-color: #cac1ab;
   border: none;
   border-radius: 5px;
   color: white;
@@ -36,7 +36,7 @@
 
 .login {
   padding: 10px 20px;
-  background-color: #eea913;
+  background-color: #cac1ab;
   border: none;
   border-radius: 5px;
   color: white;
@@ -45,34 +45,44 @@
 }
 
 .login:hover {
-  background-color: #996a12;
+  background-color: #E1D5B4;
+  padding: 12px 20px; /* Increase padding */
 }
 
 .createRecipe:hover {
-  background-color: #996a12;
+  background-color: #E1D5B4;
+  padding: 12px 20px; /* Increase padding */
 }
 
 .recipe-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  
+  padding-left: 40px; /* Add padding to create space on the left */
 }
 
 .recipe-box {
   position: relative;
   width: 400px;
-  height: 600px;
+  height: 400px;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+  background-color: #E9E2CD;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
 }
 
+
+
 .recipe-box img {
-  width: 100%;
+  width: 50%; 
+  height: 30%; 
+  object-fit: cover; 
   border-radius: 8px;
   margin-bottom: 10px;
+  border: 2px solid #ccc
 }
 
 .recipe-info {
@@ -144,7 +154,7 @@ background-color: #efefef;
 }
 .search-input {
   background-color: white;
-  width: 100%;
+  width: 90%;
   border-radius: 10px;
   height: 2.5rem;
   padding: 0 15px;
@@ -152,14 +162,20 @@ background-color: #efefef;
   display: flex;
   align-items: center;
 }
-.link {
-  color: yellow; 
-  text-decoration: none; 
+.receptai {
+  color: white;
+  text-decoration: underline;
+  padding-right: 20px;
+  font-size: 20px;
+}
+.link{
+  color: white;
+  text-decoration: none;
   padding-right: 20px;
 }
 
 .link:hover {
-  color: blue; 
+  color: grey; 
 }
 
 .like-button {
@@ -182,6 +198,11 @@ background-color: #efefef;
   min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   z-index: 1;
+  position: absolute; /* Set position to absolute */
+  top: 100%; /* Position it below the search bar */
+  left: 0; /* Align with the left edge of the search bar */
+  padding-left: 80px;
+  padding-right: 80px;
 }
 
 .dropdown-content label {
@@ -200,4 +221,33 @@ background-color: #efefef;
 
 .search-input:hover .dropdown-content {
   display: block;
+}
+.App-header {
+  background-color: #f2f2f2;
+}
+.container-change {
+  background-color: #E9E2CD;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  margin: auto;
+  width: 800px;
+  overflow: visible;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Shadow */
+}
+.element-button-change{
+  background-color: #143109 !important;
+}
+.search-bar{
+  padding-left: 75px;
+}
+.search-input-main{
+  background-color: white;
+  width: 90%;
+  border-radius: 10px;
+  height: 2.5rem;
+  padding: 0 15px;
+  box-shadow: 0px 0px 8px #ddd;
+  display: flex;
+  align-items: center;
 }

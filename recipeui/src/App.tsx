@@ -76,7 +76,6 @@ function App({ isLoggedIn, onLogout }: AppProps) {
           <SearchBar setResults={setResults} />
           <SearchResultsList results={results} />
         </div>
-        <h2>Recipes</h2>
         <div className="recipe-container">
           <Routes>
             <Route
