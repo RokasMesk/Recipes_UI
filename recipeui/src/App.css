@@ -311,3 +311,6 @@ background-color: #efefef;
 .search-input{
   border-color: #ccc;
 }
+.searchModeOn {
+  z-index: 5;
+}
