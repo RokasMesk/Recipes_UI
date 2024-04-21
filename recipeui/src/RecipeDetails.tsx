@@ -107,9 +107,9 @@ function RecipeDetails() {
         <p><strong>Time for Cooking:</strong> {recipe.timeForCooking} minutes</p>
         <p><strong>Type: </strong> {recipe.type.type}</p>
       </div>
-      {showDeleteButton && <button type="submit" onClick={handleDelete}>Delete</button>}
+      {showDeleteButton && <button  className="element-button-change" type="submit" onClick={handleDelete}>Delete</button>}
       {showEditButton && (
-        <button type="submit" onClick={handleEdit}>Edit</button>
+        <button className="product-button-recipe" type="submit" onClick={handleEdit}>Edit</button>
       )}
     </div>
   );
