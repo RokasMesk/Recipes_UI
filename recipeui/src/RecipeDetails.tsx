@@ -80,7 +80,7 @@ function RecipeDetails() {
     <div>
     <div className="recipe-details-container-end">
       <h3 className='author-end'>Recipe author: {recipe.recipeCreatorUserName}</h3>
-      <h2 className="title-end">Title: {recipe.title}</h2>
+      <h2 className="title-end"> {recipe.title}</h2>
       <div className="image">
         <img src={recipe.imageUrl} alt={recipe.title} className="image-container-end" />
       </div>

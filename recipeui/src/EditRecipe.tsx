@@ -137,7 +137,6 @@ function EditRecipe() {
       {/* Form for editing recipe details */}
       <h2>Edit Recipe</h2>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
-        <label>Title:</label>
         <input type="text" data-testid="edit-title" name="title" value={editedRecipeData.title} onChange={handleChange} />
         
         <label>Short Description:</label>
