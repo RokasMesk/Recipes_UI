@@ -61,7 +61,7 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
         <div className="right">
           {isReallyLoggedIn ? (
             <>
-              <p className='username'>{localStorage.getItem('username')}</p>
+              <p className='username'>Hello, {localStorage.getItem('username')}</p>
               <Link to={`/password/${localStorage.getItem("username")}`} className="see-more-button link">
                   Change password?
               </Link>

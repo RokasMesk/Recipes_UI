@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RecipeCreationModal.css';
 import ProductSearchBar from './ProductSearchBar';
-
+import { useNavigate } from 'react-router-dom';
 interface Product {
     id: number;
     productName: string;
@@ -27,7 +27,7 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
         type: 0,
         searchResults: [] as Product[],
     });
-
+    const navigate = useNavigate();
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -48,12 +48,18 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
             console.error('Error fetching products:', error);
         }
     };
-
+    const handleCreateProductAndClose = () => {
+        handleCreateProduct();
+        onClose();
+    };
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
+    const handleCreateProduct = () => {
+        navigate('/product/create');
+    };
+    
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const author = localStorage.getItem('email');
@@ -147,8 +153,13 @@ const RecipeCreationModal: React.FC<RecipeCreationModalProps> = ({ isOpen, onClo
                             ))}
                         </ul>
                     </div>
+                    
+                    
                     <button className="element-button-change" type="submit">Create Recipe</button>
                 </form>
+                <div className='form-group'>Cant find product?
+                    <button type='submit' onClick={handleCreateProductAndClose}>Create product</button>
+                </div>
             </div>
         </div>
     );

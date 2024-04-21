@@ -11,12 +11,12 @@ function EditRecipe() {
     skillLevel: "",
     timeForCooking: "",
     products: [] as number[], 
-    Type: "",
+    Type: 3,
     imageUrl: "",
     // Other fields as needed
   });
   const [availableProducts, setAvailableProducts] = useState([] as { id: number, productName: string }[]);
-  const [availableTypes, setAvailableTypes] = useState([] as { id: number, typeName: string }[]);
+  const [availableTypes, setAvailableTypes] = useState([] as { id: number, type: string }[]);
 
   useEffect(() => {
     // Fetch recipe data for editing based on the id parameter
@@ -38,7 +38,7 @@ function EditRecipe() {
           timeForCooking: data.timeForCooking,
           products: data.products.map((product: { id: number }) => product.id),
           Type: data.Type, 
-          imageUrl: data.ImageURL,// Set type field
+          imageUrl: data.imageUrl,// Set type field
           // Set other fields as needed
         });
       })
@@ -177,7 +177,7 @@ function EditRecipe() {
         <label>Type:</label>
         <select data-testid="edit-type" name="type" value={editedRecipeData.Type} onChange={handleChange}>
           {availableTypes.map(type => (
-            <option key={type.id} value={type.id}>{type.typeName}</option>
+            <option key={type.id} value={type.id}>{type.type}</option>
           ))}
         </select>
   
