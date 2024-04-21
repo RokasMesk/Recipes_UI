@@ -75,12 +75,13 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
                   My Favourites
               </Link>
               <button className='login' onClick={handleLogout}>Logout</button>
+              <button className='createRecipe' data-testid="create-recipe-button" onClick={toggleModal}>Create A Recipe</button>
             </>
             
           ) : (
             <button className='login' data-testid="login-button" onClick={toggleLogin}>Login</button>
           )}
-          <button className='createRecipe' data-testid="create-recipe-button" onClick={toggleModal}>Create A Recipe</button>
+          
         </div>
       </div>
       <RecipeCreationModal isOpen={isModalOpen} onClose={toggleModal} />

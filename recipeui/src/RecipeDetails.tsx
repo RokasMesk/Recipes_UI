@@ -4,6 +4,7 @@ import { useParams} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Recipe } from './App';
 import './RecipeDetails.css'; // Import CSS for styling
+import './App.css'
 import CommentsSection from './CommentsSection';
 
 function RecipeDetails() {

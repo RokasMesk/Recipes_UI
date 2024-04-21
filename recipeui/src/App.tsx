@@ -13,7 +13,6 @@ import EditRecipe from './EditRecipe';
 import ChangePasswordPage from './ChangePasswordPage';
 import CreateProduct from './CreateProduct';
 import NonVerifiedProducts from './NonVerifiedProducts';
-
 export interface Recipe {
   productName: boolean;
   id: number;
