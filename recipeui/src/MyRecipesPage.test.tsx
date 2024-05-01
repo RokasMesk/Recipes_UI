@@ -2,16 +2,19 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import MyRecipesPage from './MyRecipesPage';
-import RecipeBox from './RecipeBox';
 import 'mutationobserver-shim';
 
 global.MutationObserver = window.MutationObserver;
 
 
 // Mock the RecipeBox component to simplify testing
-jest.mock('./RecipeBox', () => (props: { recipe: { id: string, name: string } }) => (
+jest.mock('./RecipeBox', () => {
+  const MockRecipeBox = (props: { recipe: { id: string, name: string } }) => (
     <div data-testid={`recipe-${props.recipe.id}`}>{props.recipe.name}</div>
-));
+  );
+  MockRecipeBox.displayName = 'MockRecipeBox';
+  return MockRecipeBox;
+});
 
 // Helper function to mock fetch responses
 const mockFetch = (body: any, ok: boolean = true, status: number = 200) => {

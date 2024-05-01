@@ -1,7 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import Header from './Header';
 import ChangePasswordPage from './ChangePasswordPage';
 import 'mutationobserver-shim';
 

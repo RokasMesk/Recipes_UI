@@ -2,16 +2,15 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from './App';
-import RecipeBox from './RecipeBox';
-import { MemoryRouter } from 'react-router-dom';
 import 'mutationobserver-shim';
 
 global.MutationObserver = window.MutationObserver;
 
 jest.mock('./RecipeDetails', () => {
-  return () => <div data-testid="recipe-details"></div>;
+  const MockRecipeDetails = () => <div data-testid="recipe-details"></div>;
+  MockRecipeDetails.displayName = 'MockRecipeDetails';
+  return MockRecipeDetails;
 });
-jest.mock('./RecipeDetails'); // Assume RecipeDetails and others are similarly mocked
 
 // Helper function for mocking fetch success
 const mockFetchSuccess = () => {

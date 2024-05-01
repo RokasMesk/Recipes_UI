@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MyFavouritesPage from './MyFavouritesPage';
-import RecipeBox from './RecipeBox';
 import { Recipe } from './App';
 import 'mutationobserver-shim';
 

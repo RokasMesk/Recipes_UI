@@ -181,8 +181,6 @@ describe('LoginModal (submit functionality)', () => {
     });
     const mockOnLoginSuccess = jest.fn();
     const mockToggleRegistering = jest.fn();
-
-    const mockLoginResponse = { token: 'mockToken', username: 'mockUsername', email: 'mockEmail', roles: ['role1', 'role2'] };
     const { getByTestId } = render(
       <LoginModal
         isOpen={true}

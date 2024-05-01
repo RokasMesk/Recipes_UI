@@ -1,9 +1,9 @@
 // RecipeDetails.test.tsx
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import RecipeDetails from './RecipeDetails';
-import { useParams, useNavigate, NavigateFunction, BrowserRouter } from 'react-router-dom';
+import { useParams, useNavigate, NavigateFunction } from 'react-router-dom';
 import 'mutationobserver-shim';
 import userEvent from '@testing-library/user-event';
 
@@ -183,5 +183,4 @@ describe('RecipeDetails', () => {
         // Place any additional assertions here, such as checking for console.error calls or UI feedback on error
       });
 
-    // Add more tests as needed for delete functionality, error handling, etc.
 });
