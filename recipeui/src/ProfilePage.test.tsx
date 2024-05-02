@@ -15,7 +15,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // Mock for fetch API
-const mockFetch = (responseBody: any, ok: boolean = true, status: number = 200) => {
+const mockFetch = (responseBody: object, ok: boolean = true, status: number = 200) => {
   global.fetch = jest.fn().mockImplementation(() =>
     Promise.resolve({
       ok,
@@ -34,7 +34,7 @@ describe('ProfilePage Component Tests', () => {
   test('renders loading state initially', async () => {
     const userData = { username: 'testUser' };
     (useParams as jest.Mock).mockReturnValue(userData);
-    mockFetch([]); // Mock an empty response
+    mockFetch({}); // Mock an empty response
 
     render(
       <BrowserRouter>

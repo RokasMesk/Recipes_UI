@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Recipe } from './App';
 import RecipeBox from "./RecipeBox"
 import './MyRecipesPage.css'

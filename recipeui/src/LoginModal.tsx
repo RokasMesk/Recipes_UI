@@ -115,7 +115,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
           <button data-testid="login-register-button" type="submit">{isRegistering ? 'Register' : 'Login'}</button>
         </form>
         {!isRegistering ? (
-          <p data-testid="if-not-registered-redirect">If you aren't already registered <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
+          <p data-testid="if-not-registered-redirect">If you aren&apos;t already registered <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
         ) : (
           <p data-testid="if-already-account-redirect">If you already have an account <span className="clickable-text" onClick={toggleRegistering}>Click Here</span>.</p>
         )}

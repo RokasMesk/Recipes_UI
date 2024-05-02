@@ -44,7 +44,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <h1>{username}'s Recipes</h1> 
+      <h1>{username}&apos;s Recipes</h1> 
       {isLoading ? (
         <p>Loading recipes...</p>
       ) : (

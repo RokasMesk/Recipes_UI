@@ -27,7 +27,7 @@ function RecipeBox({ recipe }: RecipeBoxProps) {
       try {
         const response = await fetch(`https://localhost:7063/api/User/users/${userId}/favorites`);
         if (!response.ok) {
-          throw new Error('Failed to fetch favorites');
+          throw new Error('Failed to fetch favorites' + value);
         }
         
         const favorites = await response.json() as Recipe[];
