@@ -38,7 +38,7 @@ const ChangePasswordPage: React.FC = () => {
       // Password changed successfully
       alert('Password changed successfully');
       // Redirect user to another page if needed
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error changing password:', error);
       if (error instanceof Error) {
         setErrorMessage(error.message || 'Failed to change password');

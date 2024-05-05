@@ -10,8 +10,7 @@ interface HeaderProps {
   onLoginSuccess: (token: string) => void;
 }
 
-const apiRequest = async (url: string, requestData: any) => {
-  // Implement your API request logic here using fetch or any other library
+const apiRequest = async (url: string, requestData: object) => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -58,6 +57,7 @@ function Header({ isLoggedIn, onLogout, onLoginSuccess }: HeaderProps) {
         <div className="left">
          <Link className='receptai' to={'/'} >Receptai</Link>
         </div>
+        <h1 hidden>{token}</h1>
         <div className="right">
           {isReallyLoggedIn ? (
             <>

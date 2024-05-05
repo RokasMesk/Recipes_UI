@@ -1,10 +1,13 @@
-import { title } from 'process';
 import React from 'react';
 import { Link } from 'react-router-dom';
 interface SearchResultsListProps {
-  results: any[];
+  results: Recipe[];
 }
-
+export interface Recipe {
+  title: string;
+  id: number;
+ 
+}
 const SearchResultsList: React.FC<SearchResultsListProps> = ({ results }) => {
   
   return (

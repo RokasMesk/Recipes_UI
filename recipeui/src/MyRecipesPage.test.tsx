@@ -16,26 +16,17 @@ jest.mock('./RecipeBox', () => {
   return MockRecipeBox;
 });
 
-// Helper function to mock fetch responses
-const mockFetch = (body: any, ok: boolean = true, status: number = 200) => {
-  global.fetch = jest.fn().mockImplementation(() =>
-    Promise.resolve({
-      ok,
-      status,
-      json: () => Promise.resolve(body),
-    })
-  );
-};
+
 
 // Helper function to mock localStorage
 const mockLocalStorage = (username: string) => {
   const localStorageMock = (function () {
-    let store: Record<string, any> = {};
+    let store: Record<string, string> = {};
     return {
       getItem(key: string) {
         return store[key] || null;
       },
-      setItem(key: string, value: any) {
+      setItem(key: string, value: string) {
         store[key] = value.toString();
       },
       clear() {
@@ -55,12 +46,31 @@ describe('MyRecipesPage Component', () => {
   });
 
   test('fetches and displays recipes correctly', async () => {
-    const recipes = [
+    interface Recipe {
+      id: string;
+      name: string;
+    };
+
+    // Modify mockFetch to accept an array of recipes
+    const mockFetch = (body: Recipe[], ok: boolean = true, status: number = 200) => {
+      global.fetch = jest.fn().mockImplementation(() =>
+        Promise.resolve({
+          ok,
+          status,
+          json: () => Promise.resolve(body),
+        })
+      );
+    };
+
+    const recipes: Recipe[] = [
       { id: '1', name: 'Recipe 1' },
       { id: '2', name: 'Recipe 2' }
     ];
+
+    // Call mockFetch with the array of recipes
     mockFetch(recipes);
 
+    // Assume MyRecipesPage component fetches the recipes and displays them
     render(<MyRecipesPage />);
 
     // Wait for the recipes to be fetched and displayed
@@ -69,10 +79,26 @@ describe('MyRecipesPage Component', () => {
         expect(screen.getByTestId(`recipe-${recipe.id}`)).toHaveTextContent(recipe.name);
       });
     });
-  });
+});
+
 
   test('displays an appropriate message if no recipes are found', async () => {
     // Mock an empty response
+    interface Recipe {
+      id: string;
+      name: string;
+    };
+
+    const mockFetch = (body: Recipe[], ok: boolean = true, status: number = 200) => {
+      global.fetch = jest.fn().mockImplementation(() =>
+        Promise.resolve({
+          ok,
+          status,
+          json: () => Promise.resolve(body),
+        })
+      );
+    };
+
     mockFetch([]);
 
     render(<MyRecipesPage />);
@@ -85,8 +111,17 @@ describe('MyRecipesPage Component', () => {
   });
 
   test('handles fetch error', async () => {
-    // Mock a fetch failure
-    mockFetch('Failed to fetch recipes', false, 500);
+    const mockFetch = (body: [], ok: boolean = true, status: number = 200) => {
+      global.fetch = jest.fn().mockImplementation(() =>
+        Promise.resolve({
+          ok,
+          status,
+          json: () => Promise.resolve(body),
+        })
+      );
+    };
+
+    mockFetch([], false, 500);
 
     render(<MyRecipesPage />);
 
