@@ -68,12 +68,40 @@ function App({ isLoggedIn, onLogout }: AppProps) {
     localStorage.removeItem('isLoggedIn');
   };
 
+  const updateRecipes = (selectedProducts: string[]) => {
+    // Prepare the request body with selected products
+    console.log(selectedProducts);
+    // Fetch recipes based on selected products
+    const searchUrl = 'https://localhost:7063/api/Recipe/search';
+    fetch(searchUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(selectedProducts)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data: Recipe[]) => {
+      console.log('Updated recipes based on selected products:', data);
+      setRecipes(data);
+    })
+    .catch(error => {
+      console.error('There was a problem fetching recipes based on selected products:', error);
+    });
+  };
+  
+
   return (
     <Router>
       <div data-testid="App" className="App">
         <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} onLoginSuccess={handleLoginSuccess} />
         <div className="search-bar-container">
-          <SearchBar setResults={setResults} />
+        <SearchBar setResults={setResults} updateRecipes={updateRecipes} />
           <SearchResultsList results={results} />
         </div>
         <h2>Recipes</h2>

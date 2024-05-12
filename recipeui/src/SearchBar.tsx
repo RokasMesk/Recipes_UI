@@ -6,6 +6,7 @@ import { Recipe } from './App';
 
 interface SearchBarProps {
   setResults: (results: Recipe[]) => void;
+  updateRecipes: (selectedProducts: string[]) => void;
 }
 
 enum SearchMode {
@@ -18,11 +19,14 @@ interface Product {
   productName: string;
 }
 
-function SearchBar({ setResults }: SearchBarProps) {
+function SearchBar({ setResults, updateRecipes }: SearchBarProps) {
   const [input, setInput] = useState("");
   const [searchMode, setSearchMode] = useState(SearchMode.RecipeName);
   const [products, setProducts] = useState<Product[]>([]);
   const [productInput, setProductInput] = useState("");
+
+  const [selectedProductNames, setSelectedProductNames] = useState<string[]>([]);
+
 
   useEffect(() => {
     fetchProducts();
@@ -59,6 +63,20 @@ function SearchBar({ setResults }: SearchBarProps) {
     setInput(value);
     fetchData(value, searchMode);
   };
+
+  const handleProductCheckboxChange = (productName: string) => {
+    setSelectedProductNames(prevSelectedProductNames => {
+      if (prevSelectedProductNames.includes(productName)) {
+        return prevSelectedProductNames.filter(name => name !== productName);
+      } else {
+        return [...prevSelectedProductNames, productName];
+      }
+    });
+  
+    // Pass the updated state directly to updateRecipes
+    updateRecipes([...selectedProductNames, productName]);
+  };
+  
 
   const fetchData = (value: string, mode: SearchMode) => {
     if (!value) {
@@ -141,8 +159,10 @@ function SearchBar({ setResults }: SearchBarProps) {
                   type="checkbox"
                   id={`product-${product.id}`}
                   value={product.productName}
-                // Add your checkbox handling logic here
+                  checked={selectedProductNames.includes(product.productName)}
+                  onChange={() => handleProductCheckboxChange(product.productName)}
                 />
+
                 <label htmlFor={`product-${product.id}`}>{product.productName}</label>
               </div>
             ))}
