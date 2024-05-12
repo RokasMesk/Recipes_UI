@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-//import './NonVerifiedRecipes.css'
-interface Recipe {
-  id: number;
-  title: string;
-  // Add other properties if present in the API response
-}
+import { useParams, Navigate } from 'react-router-dom';
+import RecipeBox from './RecipeBox'; // Your RecipeBox component
+import { Recipe } from './App';
+import './App.css';
+
+// interface Recipe {
+//   id: number;
+//   title: string;
+//   // Add other properties if present in the API response
+// }
 
 const NonVerifiedRecipes = () => {
   const [nonVerifiedRecipes, setNonVerifiedRecipes] = useState<Recipe[]>([]);
@@ -48,13 +52,11 @@ const NonVerifiedRecipes = () => {
   return (
     <div className="non-verified-recipes">
       <h2>Non-Verified Recipes</h2>
-      <div className="product-grid">
+      <div className="recipe-grid">
         {nonVerifiedRecipes.map(recipe => (
-          <div className="product-item" key={recipe.id}>
-            <div className="product-details">
-              <h3>{recipe.title}</h3>
-              <button onClick={() => handleVerify(recipe.id)}>Verify</button>
-            </div>
+          <div key={recipe.id} className="recipe-item">
+            <RecipeBox recipe={recipe} />
+            <button onClick={() => handleVerify(recipe.id)} className="verify-button">Verify</button>
           </div>
         ))}
       </div>
