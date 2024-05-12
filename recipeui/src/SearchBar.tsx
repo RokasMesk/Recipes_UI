@@ -24,9 +24,9 @@ function SearchBar({ setResults, updateRecipes }: SearchBarProps) {
   const [searchMode, setSearchMode] = useState(SearchMode.RecipeName);
   const [products, setProducts] = useState<Product[]>([]);
   const [productInput, setProductInput] = useState("");
+  const [productFilter, setProductFilter] = useState(""); // New state for filtering product checkboxes
 
   const [selectedProductNames, setSelectedProductNames] = useState<string[]>([]);
-
 
   useEffect(() => {
     fetchProducts();
@@ -54,8 +54,6 @@ function SearchBar({ setResults, updateRecipes }: SearchBarProps) {
     }
 
     const searchUrl = `https://localhost:7063/api/Recipe/search?productName=${encodeURIComponent(productInput)}`;
-
-    // Redirect the user to the search URL
     window.location.href = searchUrl;
   };
 
@@ -66,21 +64,24 @@ function SearchBar({ setResults, updateRecipes }: SearchBarProps) {
 
   const handleProductCheckboxChange = (productName: string) => {
     setSelectedProductNames(prevSelectedProductNames => {
-      if (prevSelectedProductNames.includes(productName)) {
-        return prevSelectedProductNames.filter(name => name !== productName);
-      } else {
-        return [...prevSelectedProductNames, productName];
-      }
+      const updatedSelected = prevSelectedProductNames.includes(productName) ? 
+        prevSelectedProductNames.filter(name => name !== productName) : 
+        [...prevSelectedProductNames, productName];
+      updateRecipes(updatedSelected);
+      return updatedSelected;
     });
-  
-    // Pass the updated state directly to updateRecipes
-    updateRecipes([...selectedProductNames, productName]);
   };
-  
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductFilter(e.target.value);
+  };
+
+  const filteredProducts = products.filter(product => 
+    product.productName.toLowerCase().includes(productFilter.toLowerCase())
+  );
 
   const fetchData = (value: string, mode: SearchMode) => {
     if (!value) {
-      // If input is empty, clear the results
       setResults([]);
       return;
     }
@@ -100,16 +101,10 @@ function SearchBar({ setResults, updateRecipes }: SearchBarProps) {
       .then((json: Recipe[]) => {
         const results = json.filter((data) => {
           if (mode === SearchMode.RecipeName) {
-            return (
-              data.title &&
-              data.title.toLowerCase().includes(value.toLowerCase())
-            );
+            return data.title && data.title.toLowerCase().includes(value.toLowerCase());
           } else if (mode === SearchMode.ProductName) {
-            return (
-              data.products &&
-              data.products.some((product) =>
-                product.productName.toLowerCase().includes(value.toLowerCase())
-              )
+            return data.products && data.products.some(product => 
+              product.productName.toLowerCase().includes(value.toLowerCase())
             );
           }
           return false;
@@ -147,29 +142,31 @@ function SearchBar({ setResults, updateRecipes }: SearchBarProps) {
         <button onClick={toggleSearchMode} className="on">
           Toggle Search Mode
         </button>
-
       </div>
-      <div className="Ingredientai">
-        {searchMode === SearchMode.ProductName && (
-          <div className='searchModeOn'>
-            <h3>Select Products:</h3>
-            {products.map(product => (
-              <div key={product.id}>
-                <input
-                  type="checkbox"
-                  id={`product-${product.id}`}
-                  value={product.productName}
-                  checked={selectedProductNames.includes(product.productName)}
-                  onChange={() => handleProductCheckboxChange(product.productName)}
-                />
-
-                <label htmlFor={`product-${product.id}`}>{product.productName}</label>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
+      {searchMode === SearchMode.ProductName && (
+        <div className="Ingredientai searchModeOn">
+          <input 
+            type="text"
+            className="search-input" 
+            placeholder="Filter Products" 
+            value={productFilter} 
+            onChange={handleFilterChange} 
+          />
+          <h3>Select Products:</h3>
+          {filteredProducts.map(product => (
+            <div key={product.id}>
+              <input
+                type="checkbox"
+                id={`product-${product.id}`}
+                value={product.productName}
+                checked={selectedProductNames.includes(product.productName)}
+                onChange={() => handleProductCheckboxChange(product.productName)}
+              />
+              <label htmlFor={`product-${product.id}`}>{product.productName}</label>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
