@@ -89,7 +89,7 @@ function SearchBar({ setResults }: SearchBarProps) {
           } else if (mode === SearchMode.ProductName) {
             return (
               data.products &&
-              data.products.some((product) => 
+              data.products.some((product) =>
                 product.productName.toLowerCase().includes(value.toLowerCase())
               )
             );
@@ -104,46 +104,52 @@ function SearchBar({ setResults }: SearchBarProps) {
   };
 
   const toggleSearchMode = () => {
-    setSearchMode((prevMode) => 
+    setSearchMode((prevMode) =>
       prevMode === SearchMode.RecipeName ? SearchMode.ProductName : SearchMode.RecipeName
     );
   };
 
   return (
-    <div className="search-input-main">
-      <input className="search-input"
-        placeholder={`Search by ${searchMode}`}
-        value={searchMode === SearchMode.ProductName ? productInput : input}
-        onChange={(e) => {
-          if (searchMode === SearchMode.ProductName) {
-            handleProductInputChange(e.target.value);
-          } else {
-            handleChange(e.target.value);
-          }
-        }}
-      />
-      <button onClick={searchMode === SearchMode.ProductName ? handleProductSearch : undefined} className="search-button">
-        <FontAwesomeIcon icon={faSearch} className="search-icon" />
-      </button>
-      <button onClick={toggleSearchMode} className="on">
-        Toggle Search Mode
-      </button>
-      {searchMode === SearchMode.ProductName && (
-        <div className='searchModeOn'>
-          <h3>Select Products:</h3>
-          {products.map(product => (
-            <div key={product.id}>
-              <input
-                type="checkbox"
-                id={`product-${product.id}`}
-                value={product.productName}
+    <div className="SearchMain">
+      <div className="search-input-main">
+        <input className="search-input"
+          placeholder={`Search by ${searchMode}`}
+          value={searchMode === SearchMode.ProductName ? productInput : input}
+          onChange={(e) => {
+            if (searchMode === SearchMode.ProductName) {
+              handleProductInputChange(e.target.value);
+            } else {
+              handleChange(e.target.value);
+            }
+          }}
+        />
+        <button onClick={searchMode === SearchMode.ProductName ? handleProductSearch : undefined} className="search-button">
+          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        </button>
+        <button onClick={toggleSearchMode} className="on">
+          Toggle Search Mode
+        </button>
+
+      </div>
+      <div className="Ingredientai">
+        {searchMode === SearchMode.ProductName && (
+          <div className='searchModeOn'>
+            <h3>Select Products:</h3>
+            {products.map(product => (
+              <div key={product.id}>
+                <input
+                  type="checkbox"
+                  id={`product-${product.id}`}
+                  value={product.productName}
                 // Add your checkbox handling logic here
-              />
-              <label htmlFor={`product-${product.id}`}>{product.productName}</label>
-            </div>
-          ))}
-        </div>
-      )}
+                />
+                <label htmlFor={`product-${product.id}`}>{product.productName}</label>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
