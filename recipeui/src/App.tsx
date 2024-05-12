@@ -11,7 +11,9 @@ import ProfilePage from './ProfilePage';
 import MyFavouritesPage from './MyFavouritesPage';
 import EditRecipe from './EditRecipe';
 import ChangePasswordPage from './ChangePasswordPage';
-
+import NonVerifiedProducts from './NonVerifiedProducts';
+import NonVerifiedRecipes from './NonVerifiedRecipes';
+import CreateProduct from './CreateProduct';
 export interface Recipe {
   productName: boolean;
   id: number;
@@ -119,9 +121,12 @@ function App({ isLoggedIn, onLogout }: AppProps) {
             />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
             <Route path="/edit/:id" Component={EditRecipe} />
+            <Route path="/nonverified" element={<NonVerifiedProducts/>}/>
+            <Route path="/nonverifiedRecipes" element={<NonVerifiedRecipes/>}/>
             <Route path={`/recipes/${localStorage.getItem('username')}`} element={<MyRecipesPage />} />
             <Route path={`/favourites/${localStorage.getItem('username')}`} element={<MyFavouritesPage />} />
             <Route path="/profile/:username" element={<ProfilePage />} />
+            <Route path="/product/create" element={<CreateProduct/>} />
             <Route path="/password/:username" element={<ChangePasswordPage/>} />
           </Routes>
         </div>
