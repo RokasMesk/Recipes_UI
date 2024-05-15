@@ -121,7 +121,7 @@ function App({ isLoggedIn, onLogout }: AppProps) {
             />
             <Route path="/recipe/:id" element={<RecipeDetails />} />
             <Route path="/edit/:id" Component={EditRecipe} />
-            <Route path="/nonverified" element={<NonVerifiedProducts/>}/>
+            <Route path="/nonverified" element={<NonVerifiedProducts/>} />
             <Route path="/nonverifiedRecipes" element={<NonVerifiedRecipes/>}/>
             <Route path={`/recipes/${localStorage.getItem('username')}`} element={<MyRecipesPage />} />
             <Route path={`/favourites/${localStorage.getItem('username')}`} element={<MyFavouritesPage />} />

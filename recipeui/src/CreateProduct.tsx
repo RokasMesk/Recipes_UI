@@ -32,10 +32,10 @@ const CreateProduct = () => {
     };
 
     return (
-        <div>
+        <div className='NewProductMain'>
             <h2>Create New Product</h2>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className='NewProductName'>
                     <label>Product Name:</label>
                     <input
                         type="text"
@@ -44,7 +44,7 @@ const CreateProduct = () => {
                         required
                     />
                 </div>
-                <button type="submit">Create</button>
+                <button className="element-button-change" type="submit">Create</button>
                 <button type="button" onClick={handleCancel}>Cancel</button>
             </form>
         </div>

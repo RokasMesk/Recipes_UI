@@ -78,7 +78,7 @@ function RecipeDetails() {
   }
 
   return (
-    <div>
+    <div className="LABAS">
     <div className="recipe-details-container-end">
       <h3 className='author-end'>Recipe author: {recipe.recipeCreatorUserName}</h3>
       <h2 className="title-end"> {recipe.title}</h2>

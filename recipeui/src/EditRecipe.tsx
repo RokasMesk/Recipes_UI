@@ -17,6 +17,7 @@ function EditRecipe() {
   });
   const [availableProducts, setAvailableProducts] = useState([] as { id: number, productName: string }[]);
   const [availableTypes, setAvailableTypes] = useState([] as { id: number, type: string }[]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     // Fetch recipe data for editing based on the id parameter
@@ -132,11 +133,16 @@ function EditRecipe() {
     return <div>Loading...</div>;
   }
 
+  const filteredProducts = availableProducts.filter(product =>
+    product.productName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="class-kazkur" style={{ textAlign: 'center', margin: 'auto', maxWidth: '600px' }}>
       {/* Form for editing recipe details */}
       <h2>Edit Recipe</h2>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
+        <label>Title:</label>
         <input type="text" data-testid="edit-title" name="title" value={editedRecipeData.title} onChange={handleChange} />
         
         <label>Short Description:</label>
@@ -159,19 +165,27 @@ function EditRecipe() {
         <input data-testid="edit-time-for-cooking" type="number" name="timeForCooking" value={editedRecipeData.timeForCooking} onChange={handleChange} />
         
         <label>Products:</label>
-        {availableProducts.map(product => (
-          <div key={product.id}>
-            <input
-             data-testid="edit-products"
-              type="checkbox"
-              name="products"
-              value={product.id.toString()}
-              checked={editedRecipeData.products.includes(product.id)}
-              onChange={handleChange}
-            />
-            <label>{product.productName}</label>
-          </div>
-        ))}
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          {filteredProducts.map(product => (
+            <div key={product.id}>
+              <input
+                data-testid="edit-products"
+                type="checkbox"
+                name="products"
+                value={product.id.toString()}
+                checked={editedRecipeData.products.includes(product.id)}
+                onChange={handleChange}
+              />
+              <label>{product.productName}</label>
+            </div>
+          ))}
+        </div>
         
         <label>Type:</label>
         <select data-testid="edit-type" name="type" value={editedRecipeData.Type} onChange={handleChange}>
