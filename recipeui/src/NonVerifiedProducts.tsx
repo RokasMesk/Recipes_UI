@@ -53,7 +53,7 @@ const NonVerifiedProducts = () => {
           <div className="product-item" key={product.id}>
             <div className="product-details">
               <h3>{product.productName}</h3>
-              <button onClick={() => handleVerify(product.id)}>Verify</button>
+              <button className="NonButton"onClick={() => handleVerify(product.id)}>Verify</button>
             </div>
           </div>
         ))}
